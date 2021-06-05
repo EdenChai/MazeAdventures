@@ -2,6 +2,7 @@ package Model;
 
 import Client.Client;
 import IO.MyDecompressorInputStream;
+import View.MazeDisplayer;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.AState;
@@ -144,74 +145,107 @@ public class MyModel extends Observable implements IModel
         {
             case UP:
             case NUMPAD8:
-                if (isMoveValid(characterRow-1, characterCol))
+                if (isMoveValid(characterRow - 1, characterCol))
+                {
                     characterRow--;
+                    setChanged();
+                    notifyObservers("player moved");
+                }
                 break;
 
             case DOWN:
             case NUMPAD2:
-                if (isMoveValid(characterRow+1, characterCol))
+                if (isMoveValid(characterRow + 1, characterCol))
+                {
                     characterRow++;
+                    setChanged();
+                    notifyObservers("player moved");
+                }
                 break;
 
             case LEFT:
             case NUMPAD4:
+                setChanged();
+                notifyObservers("player looked to the left");
                 if (isMoveValid(characterRow, characterCol-1))
+                {
                     characterCol--;
+                    setChanged();
+                    notifyObservers("player moved");
+                }
                 break;
 
 
             case RIGHT:
             case NUMPAD6:
+                setChanged();
+                notifyObservers("player looked to the right");
                 if (isMoveValid(characterRow, characterCol+1))
+                {
                     characterCol++;
+                    setChanged();
+                    notifyObservers("player moved");
+                }
                 break;
 
             /*----------------------diagonal moves---------------------*/
 
             // left-up
             case NUMPAD7:
+                setChanged();
+                notifyObservers("player looked to the left");
                 if (isMoveValid(characterRow-1, characterCol-1) && (isMoveValid(characterRow, characterCol-1) || isMoveValid(characterRow-1, characterCol)))
                 {
                     characterRow--;
                     characterCol--;
+                    setChanged();
+                    notifyObservers("player moved");
                 }
                 break;
 
             // left-down
             case NUMPAD1:
+                setChanged();
+                notifyObservers("player looked to the left");
                 if (isMoveValid(characterRow+1, characterCol-1) && (isMoveValid(characterRow, characterCol-1) || isMoveValid(characterRow+1, characterCol)))
                 {
                     characterRow++;
                     characterCol--;
+                    setChanged();
+                    notifyObservers("player moved");
                 }
                 break;
 
             // right-up
             case NUMPAD9:
+                setChanged();
+                notifyObservers("player looked to the right");
                 if (isMoveValid(characterRow-1, characterCol+1) && (isMoveValid(characterRow-1, characterCol) || isMoveValid(characterRow, characterCol+1)))
                 {
                     characterRow--;
                     characterCol++;
+                    setChanged();
+                    notifyObservers("player moved");
                 }
                 break;
 
             // right-down
             case NUMPAD3:
+                setChanged();
+                notifyObservers("player looked to the right");
                 if (isMoveValid(characterRow+1, characterCol+1) && (isMoveValid(characterRow+1, characterCol) || isMoveValid(characterRow, characterCol+1)))
                 {
                     characterRow++;
                     characterCol++;
+                    setChanged();
+                    notifyObservers("player moved");
                 }
                 break;
             default:
                 return;
         }
-
         //TODO: need to check if is the goal position
 
-        setChanged();
-        notifyObservers("player moved");
     }
 
 

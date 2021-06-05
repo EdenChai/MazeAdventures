@@ -100,8 +100,13 @@ public class MyViewController implements Initializable, Observer
     public void setPlayerPosition(int row, int col)
     {
         mazeDisplayer.setPlayerPosition(row, col);
+        mazeDisplayer.playMovementSound();
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
+    }
+    public void setPlayerDirection(String direction)
+    {
+        mazeDisplayer.setPlayerDirection(direction);
     }
 
     public void mouseClick(MouseEvent mouseEvent)
@@ -117,9 +122,16 @@ public class MyViewController implements Initializable, Observer
         {
             case "maze generated" -> mazeGenerated();
             case "player moved" -> playerMoved();
+            case  "player looked to the left" ->playerLooked("left");
+            case  "player looked to the right" ->playerLooked("right");
             case "maze solved" -> mazeSolved();
             default -> System.out.println("Not implemented change: " + change);
         }
+    }
+
+    private void playerLooked(String direction)
+    {
+        setPlayerDirection(direction);
     }
 
     private void mazeSolved()
@@ -132,8 +144,15 @@ public class MyViewController implements Initializable, Observer
         setPlayerPosition(myViewModel.getPlayerRow(), myViewModel.getPlayerCol());
     }
 
+
+
     private void mazeGenerated()
     {
+        mazeDisplayer.playerCharacter.set("Jerry"); //TODO - change this in options menu
+        mazeDisplayer.setTerrainType("sand"); //TODO - set the terrain type from the options menu (possible)
+        mazeDisplayer.loadCharacters();
         mazeDisplayer.drawMaze(myViewModel.getMaze());
+        mazeDisplayer.setGoalDirection();
+        mazeDisplayer.loadSounds();
     }
 }

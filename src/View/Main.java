@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class Main extends Application {
 
     private static MyModel model;
@@ -30,7 +32,6 @@ public class Main extends Application {
         MyViewController myViewController = fxmlLoader.getController();
         myViewController.setViewModel(viewModel);
     }
-
 
     public static void main(String[] args) {
         launch(args);

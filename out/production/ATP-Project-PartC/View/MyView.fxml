@@ -85,7 +85,7 @@
     <center>
         <Pane prefHeight="448.0" prefWidth="448.0" BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="400.0" imageFileNamePlayer="./resources/images/mario.jpg" imageFileNameWall="./resources/images/wall.png" imageFileNameGoalPosition="./resources/images/trophy.png" onKeyPressed="#keyPressed" width="400.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="400.0"  onKeyPressed="#keyPressed" width="400.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -18,6 +18,7 @@ public class MainMenuControl
     public void setBackGround(Stage stage)
     {
         BackGround.fitWidthProperty().bind(stage.widthProperty());
+        BackGround.fitHeightProperty().bind(stage.heightProperty());
     }
 
     public void optionsButtonClicked(ActionEvent actionEvent) throws IOException {

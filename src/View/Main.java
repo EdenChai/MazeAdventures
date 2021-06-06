@@ -21,9 +21,9 @@ public class Main extends Application {
     public static MyModel model;
     public static MyViewModel viewModel;
     public static MainMenuControl mainMenuControl;
-    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionMenuScene;
+    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene;
     public static Stage currentStage;
-    public Parent creditsMenuStructure;
+    public Parent creditsMenuStructure,helpMenuStructure,optionsMenuStructure;
     public static MediaPlayer mainMenuPlayer;
 
 
@@ -37,9 +37,14 @@ public class Main extends Application {
 
         //Load FXML
         creditsMenuStructure = FXMLLoader.load(getClass().getResource("../View/CreditsMenuStructure.fxml"));
+        helpMenuStructure = FXMLLoader.load(getClass().getResource("../View/HelpMenuStructure.fxml"));
+        optionsMenuStructure = FXMLLoader.load(getClass().getResource("../View/OptionsMenuStructure.fxml"));
+
 
         //Load scenes
         creditsMenuScene = new Scene(creditsMenuStructure,899,952);
+        helpMenuScene = new Scene(helpMenuStructure,899,952);
+        optionsMenuScene = new Scene(optionsMenuStructure,899,952);
 
         //Load the game stage control
         FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
@@ -61,6 +66,9 @@ public class Main extends Application {
         mainMenuPlayer.play();
 
         currentStage.setScene(mainMenuScene);
+
+        mainMenuControl.setBackGround(currentStage);
+
         currentStage.setResizable(true);
         currentStage.show();
 
@@ -101,6 +109,16 @@ public class Main extends Application {
     public static void goToCreditsMenu()
     {
         currentStage.setScene(creditsMenuScene);
+    }
+
+    public static void goToHelpMenu()
+    {
+        currentStage.setScene(helpMenuScene);
+    }
+
+    public static void goToOptionsMenu()
+    {
+        currentStage.setScene(optionsMenuScene);
     }
 
     public static void switchToCredits()

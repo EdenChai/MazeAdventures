@@ -5,21 +5,28 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
 public class MainMenuControl
 {
+    public ImageView BackGround;
 
-    public void settingButtonClicked(ActionEvent actionEvent) throws IOException {
-        //Main.switchSceneSettings();
-
+    public void setBackGround(Stage stage)
+    {
+        BackGround.fitWidthProperty().bind(stage.widthProperty());
     }
 
-    public void helpButtonClicked(ActionEvent actionEvent) {
-        //Main.switchSceneHelp();
+    public void optionsButtonClicked(ActionEvent actionEvent) throws IOException {
+        Main.goToOptionsMenu();
+    }
 
+    public void helpButtonClicked(ActionEvent actionEvent)
+    {
+        Main.goToHelpMenu();
     }
 
     public void exitButtonClicked(ActionEvent actionEvent) {

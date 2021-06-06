@@ -7,12 +7,12 @@
 
 <AnchorPane prefHeight="952.0" prefWidth="899.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainMenuControl">
    <children>
-      <ImageView fitHeight="952.0" fitWidth="899.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="BackGround" focusTraversable="true" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
          <image>
-            <Image url="@../../resources/UI/UI/MainMenu.png" />
+            <Image url="@/UI/UI/MainMenu.png" />
          </image>
       </ImageView>
-      <GridPane layoutX="1.0" layoutY="2.0" prefHeight="952.0" prefWidth="899.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane layoutX="1.0" layoutY="2.0" prefHeight="952.0" prefWidth="899.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -31,11 +31,11 @@
             <Button mnemonicParsing="false" text="LOAD GAME" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#creditsButtonClicked" text="CREDITS" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#exitButtonClicked" text="X" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-            <Button mnemonicParsing="false" prefWidth="52.0" text="⚙" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <Button mnemonicParsing="false" onAction="#optionsButtonClicked" prefWidth="52.0" text="⚙" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
-            <Button mnemonicParsing="false" text="?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Button mnemonicParsing="false" onAction="#helpButtonClicked" text="?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
          </children>
       </GridPane>
    </children>

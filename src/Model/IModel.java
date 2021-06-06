@@ -19,4 +19,6 @@ public interface IModel
 
 
     void assignObserver(Observer o);
+
+    void shutDown();
 }

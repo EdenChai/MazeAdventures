@@ -22,6 +22,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Eden_Hai
@@ -37,6 +39,8 @@ public class MyModel extends Observable implements IModel
     private int characterRow;
     private int characterCol;
     private boolean isSolved;
+
+    private ExecutorService threadPool = Executors.newCachedThreadPool();
 
 
     public MyModel()
@@ -326,4 +330,17 @@ public class MyModel extends Observable implements IModel
         try { return maze.getMaze()[row][col] == 0; }
         catch (Exception e) { return false; }
     }
+
+    @Override
+    public void shutDown() {
+        System.out.println("Close Model");
+        mazeGeneratingServer.stop();
+        if (solveSearchProblemServer != null)
+        {
+            solveSearchProblemServer.stop();
+        }
+        threadPool.shutdown();
+    }
+
+
 }

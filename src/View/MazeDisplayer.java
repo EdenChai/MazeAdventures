@@ -184,7 +184,6 @@ public class MazeDisplayer extends Canvas
                 if (i == 0 || i == rows+1 || j == 0 || j == cols+1)
                 {
                     drawTheImage(tiles[10], graphicsContext, cellHeight, cellWidth, x, y);
-                    System.out.println(i+","+j);
                     continue;
                 }
 

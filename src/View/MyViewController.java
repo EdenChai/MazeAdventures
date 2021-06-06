@@ -148,8 +148,8 @@ public class MyViewController implements Initializable, Observer
 
     private void mazeGenerated()
     {
-        mazeDisplayer.playerCharacter.set("Jerry"); //TODO - change this in options menu
-        mazeDisplayer.setTerrainType("sand"); //TODO - set the terrain type from the options menu (possible)
+        mazeDisplayer.playerCharacter.set("Tom"); //TODO - change this in options menu
+        mazeDisplayer.setTerrainType("grass"); //TODO - set the terrain type from the options menu (possible)
         mazeDisplayer.loadCharacters();
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();

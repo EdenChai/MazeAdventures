@@ -331,6 +331,19 @@ public class MyModel extends Observable implements IModel
         catch (Exception e) { return false; }
     }
 
+    public void setMazeGeneratingAlgorithm(String generatingAlgorithm)
+    {
+        //Configurations.setConfiguration(mazeGeneratingAlgorithm, generatingAlgorithm)
+
+    }
+
+    public void setMazeSearchingAlgorithm(String searchingAlgorithm)
+    {
+        //Configurations.setConfiguration(mazeSearchingAlgorithm, searchingAlgorithm)
+    }
+
+
+
     @Override
     public void shutDown() {
         System.out.println("Close Model");

@@ -3,7 +3,6 @@ package View;
 import Model.MyModel;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,9 +20,14 @@ public class Main extends Application {
     public static MyModel model;
     public static MyViewModel viewModel;
     public static MainMenuControl mainMenuControl;
-    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene;
+    public static CreditsMenuControl creditsMenuControl;
+    public static HelpMenuControl helpMenuControl;
+    public static OptionsMenuControl optionsMenuControl;
+    public static MyViewController myViewController;
+    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader;
+    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene;
     public static Stage currentStage;
-    public Parent creditsMenuStructure,helpMenuStructure,optionsMenuStructure;
+    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure;
     public static MediaPlayer mainMenuPlayer;
 
 
@@ -35,22 +39,40 @@ public class Main extends Application {
         currentStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
         currentStage.initStyle(StageStyle.DECORATED);
 
+        //Load loaders
+        mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
+        creditsMenuLoader = new FXMLLoader(getClass().getResource("../View/CreditsMenuStructure.fxml"));
+        helpMenuLoader = new FXMLLoader(getClass().getResource("../View/HelpMenuStructure.fxml"));
+        optionsMenuLoader = new FXMLLoader(getClass().getResource("../View/OptionsMenuStructure.fxml"));
+        gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MazeDisplayerStructure.fxml"));
+
         //Load FXML
-        creditsMenuStructure = FXMLLoader.load(getClass().getResource("../View/CreditsMenuStructure.fxml"));
-        helpMenuStructure = FXMLLoader.load(getClass().getResource("../View/HelpMenuStructure.fxml"));
-        optionsMenuStructure = FXMLLoader.load(getClass().getResource("../View/OptionsMenuStructure.fxml"));
+        mainMenuStructure = mainMenuLoader.load();
+        creditsMenuStructure = creditsMenuLoader .load();
+        helpMenuStructure =helpMenuLoader.load();
+        optionsMenuStructure = optionsMenuLoader.load();
+        gameMenuStructure = gameMenuLoader.load();
+
+        //Load controllers
+        mainMenuControl = mainMenuLoader.getController();
+        creditsMenuControl= creditsMenuLoader.getController();
+        helpMenuControl= helpMenuLoader.getController();
+        optionsMenuControl= optionsMenuLoader.getController();
+        myViewController = gameMenuLoader.getController();
 
 
         //Load scenes
         creditsMenuScene = new Scene(creditsMenuStructure,899,952);
         helpMenuScene = new Scene(helpMenuStructure,899,952);
         optionsMenuScene = new Scene(optionsMenuStructure,899,952);
+        mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
+        gameMenuScene = new Scene(gameMenuStructure,899,952);
 
         //Load the game stage control
         FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
         mainMenuLoader.load();
-        mainMenuControl = mainMenuLoader.getController();
-        mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
+
+
 
         //Load the models
         model = new MyModel();
@@ -65,9 +87,17 @@ public class Main extends Application {
         mainMenuPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mainMenuPlayer.play();
 
+        configureControllers();
+
+        //Load the main menu
         currentStage.setScene(mainMenuScene);
 
+
+        //Calibrate all scene backgrounds
         mainMenuControl.setBackGround(currentStage);
+        creditsMenuControl.setBackGround(currentStage);
+        helpMenuControl.setBackGround(currentStage);
+        optionsMenuControl.setBackGround(currentStage);
 
         currentStage.setResizable(true);
         currentStage.show();
@@ -96,6 +126,10 @@ public class Main extends Application {
 
     }
 
+    public static void configureControllers()
+    {
+        optionsMenuControl.configureButtons();
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -118,12 +152,56 @@ public class Main extends Application {
 
     public static void goToOptionsMenu()
     {
+        playButtonClickSound();
         currentStage.setScene(optionsMenuScene);
     }
 
-    public static void switchToCredits()
+    public static Stage getCurrentStage()
     {
-        currentStage.setScene(creditsMenuScene);
+        return currentStage;
+    }
+
+    public static void goToGameMenu()
+    {
+        myViewController.configure(viewModel,gameMenuScene,currentStage);
+        viewModel.addObserver(myViewController);
+        currentStage.setScene(gameMenuScene);
+    }
+
+    public static void playButtonHoverSound()
+    {
+        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_beep_16.wav");
+        Media hoverSoundClip = new Media(soundClip.toURI().toString());
+        MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
+        movementSoundPlayer.setVolume(0.1);
+        movementSoundPlayer.play();
+    }
+
+    public static void playButtonClickSound()
+    {
+        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_click_22.wav");
+        Media hoverSoundClip = new Media(soundClip.toURI().toString());
+        MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
+        movementSoundPlayer.setVolume(0.1);
+        movementSoundPlayer.play();
+    }
+
+    public static void playButtonAcceptSound()
+    {
+        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_confirm_01.wav");
+        Media hoverSoundClip = new Media(soundClip.toURI().toString());
+        MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
+        movementSoundPlayer.setVolume(0.1);
+        movementSoundPlayer.play();
+    }
+
+    public static void playButtonExitSound()
+    {
+        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_cancel_02.wav");
+        Media hoverSoundClip = new Media(soundClip.toURI().toString());
+        MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
+        movementSoundPlayer.setVolume(0.1);
+        movementSoundPlayer.play();
     }
 
     @Override

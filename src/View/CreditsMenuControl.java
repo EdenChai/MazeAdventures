@@ -13,6 +13,7 @@ public class CreditsMenuControl
     public void setBackGround(Stage stage)
     {
         BackGround.fitWidthProperty().bind(stage.widthProperty());
+        BackGround.fitHeightProperty().bind(stage.heightProperty());
     }
 
     public void returnButtonClicked(ActionEvent actionEvent)

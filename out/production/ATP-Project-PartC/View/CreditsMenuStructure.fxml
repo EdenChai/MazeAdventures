@@ -9,7 +9,7 @@
     <children>
         <ImageView fx:id="BackGround" focusTraversable="true" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
             <image>
-                <Image url="@/UI/UI/credits.png" />
+                <Image url="@/UI/UI/Credits.png" />
             </image>
         </ImageView>
         <GridPane layoutX="1.0" layoutY="2.0" prefHeight="952.0" prefWidth="899.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">

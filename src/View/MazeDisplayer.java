@@ -63,6 +63,15 @@ public class MazeDisplayer extends Canvas
     public void setTerrainType(String terrainType) {this.terrainType.set(terrainType);}
     public void setPlayerCharacter(String characterName) {this.playerCharacter.set(characterName);}
 
+    double canvasHeight,canvasWidth,cellHeight,cellWidth;
+
+    public MazeDisplayer(){
+        widthProperty().addListener(e->draw());
+        heightProperty().addListener(e->draw());
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.clearRect(0,0,canvasWidth,canvasHeight);
+    }
+
     public void setPlayerPosition(int playerRow, int playerCol)
     {
         this.playerRow = playerRow;
@@ -87,13 +96,13 @@ public class MazeDisplayer extends Canvas
     {
         if (maze == null) return;
 
-        double canvasHeight = getHeight();
-        double canvasWidth = getWidth();
+        canvasHeight = getHeight();
+        canvasWidth = getWidth();
         int rows = maze.getRowSize();
         int cols = maze.getColSize();
 
-        double cellHeight = canvasHeight / (rows+2);
-        double cellWidth = canvasWidth / (cols+2);
+        cellHeight = canvasHeight / (rows+2);
+        cellWidth = canvasWidth / (cols+2);
 
         GraphicsContext graphicsContext = getGraphicsContext2D();
 

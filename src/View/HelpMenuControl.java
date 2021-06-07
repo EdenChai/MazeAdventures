@@ -12,7 +12,9 @@ public class HelpMenuControl
     public void setBackGround(Stage stage)
     {
         BackGround.fitWidthProperty().bind(stage.widthProperty());
+        BackGround.fitHeightProperty().bind(stage.heightProperty());
     }
+
     public void returnButtonClicked(ActionEvent actionEvent)
     {
         Main.returnToMainMenu();

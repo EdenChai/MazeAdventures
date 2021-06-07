@@ -2,16 +2,22 @@ package View;
 
 import Model.MazeGenerator;
 import ViewModel.MyViewModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.net.URL;
@@ -22,6 +28,8 @@ import java.util.ResourceBundle;
 public class MyViewController implements Initializable, Observer
 {
     public MyViewModel myViewModel;
+    public Scene gameMenuScene;
+    public Stage currentStage;
 
     public void setViewModel(MyViewModel myViewModel)
     {
@@ -154,5 +162,28 @@ public class MyViewController implements Initializable, Observer
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();
         mazeDisplayer.loadSounds();
+    }
+
+    public void configure(MyViewModel viewModel, Scene gameMenuScene, Stage currentStage)
+    {
+        textField_mazeRows.clear();
+        textField_mazeColumns.clear();
+        if(viewModel !=null && gameMenuScene!= null && currentStage != null)
+        {
+            this.myViewModel= viewModel;
+            this.gameMenuScene = gameMenuScene;
+            this.currentStage=currentStage;
+            currentStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                @Override
+                public void handle(WindowEvent e)
+                {
+                    viewModel.model.shutDown();
+                    Platform.exit();
+                    System.exit(0);
+                }
+            });
+
+
+        }
     }
 }

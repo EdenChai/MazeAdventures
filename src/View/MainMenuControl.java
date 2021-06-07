@@ -42,7 +42,7 @@ public class MainMenuControl
     }
 
     public void newGameButtonClicked(ActionEvent actionEvent){
-        //Main.play();
+        Main.goToGameMenu();
     }
 
     public void loadGameButtonClicked(ActionEvent actionEvent){

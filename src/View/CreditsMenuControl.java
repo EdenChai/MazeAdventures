@@ -2,13 +2,30 @@ package View;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class CreditsMenuControl
 {
     public ImageView BackGround;
+    public Button exitButton;
+    public Button returnButton;
+    public ImageView[] exitButtonStates;
+    public ImageView[] returnButtonStates;
+
+    public void configureButtons()
+    {
+        exitButtonStates = new ImageView[3];
+        returnButtonStates = new ImageView[3];
+        Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates, exitButton,returnButton);
+    }
+
+
 
     public void setBackGround(Stage stage)
     {
@@ -18,6 +35,7 @@ public class CreditsMenuControl
 
     public void returnButtonClicked(ActionEvent actionEvent)
     {
+        Main.playButtonClickSound();
         Main.returnToMainMenu();
     }
 

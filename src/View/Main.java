@@ -7,16 +7,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.control.Button;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-//test
 
 public class Main extends Application {
 
@@ -133,6 +136,8 @@ public class Main extends Application {
     {
         optionsMenuControl.configureButtons();
         mainMenuControl.configureButtons();
+        creditsMenuControl.configureButtons();
+        helpMenuControl.configureButtons();
     }
 
     public static void main(String[] args) {
@@ -141,16 +146,19 @@ public class Main extends Application {
 
     public static void returnToMainMenu()
     {
+        playButtonClickSound();
         currentStage.setScene(mainMenuScene);
     }
 
     public static void goToCreditsMenu()
     {
+        playButtonClickSound();
         currentStage.setScene(creditsMenuScene);
     }
 
     public static void goToHelpMenu()
     {
+        playButtonClickSound();
         currentStage.setScene(helpMenuScene);
     }
 
@@ -169,6 +177,7 @@ public class Main extends Application {
     {
         myViewController.configure(viewModel,gameMenuScene,currentStage);
         viewModel.addObserver(myViewController);
+        playButtonClickSound();
         currentStage.setScene(gameMenuScene);
     }
 
@@ -206,6 +215,35 @@ public class Main extends Application {
         MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
         movementSoundPlayer.setVolume(0.1);
         movementSoundPlayer.play();
+    }
+
+    public static void loadButtonGraphicsExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
+    {
+        try
+        {
+            exitButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png"),100,100,false,false));
+            exitButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png"),100,100,false,false));
+            exitButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png"),100,100,false,false));
+            returnButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png"),100,100,false,false));
+            returnButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png"),100,100,false,false));
+            returnButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png"),100,100,false,false));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Button load failed");
+            e.printStackTrace();
+        }
+
+        exitButton.setGraphic(exitButtonStates[0]);
+        exitButton.setOnMouseEntered(e -> {exitButton.setGraphic(exitButtonStates[1]);
+            Main.playButtonHoverSound();});
+        exitButton.setOnMouseExited(e -> exitButton.setGraphic(exitButtonStates[0]));
+        exitButton.setOnMousePressed(e -> exitButton.setGraphic(exitButtonStates[2]));
+        returnButton.setGraphic(returnButtonStates[0]);
+        returnButton.setOnMouseEntered(e -> {returnButton.setGraphic(returnButtonStates[1]);
+            Main.playButtonHoverSound();});
+        returnButton.setOnMouseExited(e -> returnButton.setGraphic(returnButtonStates[0]));
+        returnButton.setOnMousePressed(e -> returnButton.setGraphic(returnButtonStates[2]));
     }
 
     @Override

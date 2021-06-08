@@ -7,9 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -26,7 +23,7 @@ public class OptionsMenuControl
     public ToggleButton bestToggleButton;
     public Button exitButton;
     public Button returnButton;
-    public ImageView[] redButtonStates;
+    public ImageView[] exitButtonStates;
     public ImageView[] returnButtonStates;
 
     public void configureButtons()
@@ -45,34 +42,73 @@ public class OptionsMenuControl
         bestToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
         bestToggleButton.setPickOnBounds(false);
 
-
+        Image image;
         try
         {
-        Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffEmpty.png"));
-        emptyToggleButton.setGraphic(new ImageView(image));
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffSimple.png"));
-        simpleToggleButton.setGraphic(new ImageView(image));
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnMy.png"));
-        myMazeToggleButton.setGraphic(new ImageView(image));
+            if (Main.viewModel.getGenerateMazeConfiguration().equals("EmptyMazeGenerator"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnEmpty.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffEmpty.png"));
+            }
+            emptyToggleButton.setGraphic(new ImageView(image));
 
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffDepth.png"));
-        dfsToggleButton.setGraphic(new ImageView(image));
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffBreadth.png"));
-        bfsToggleButton.setGraphic(new ImageView(image));
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnBest.png"));
-        bestToggleButton.setGraphic(new ImageView(image));
+            if (Main.viewModel.getGenerateMazeConfiguration().equals("SimpleMazeGenerator"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnSimple.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffSimple.png"));
+            }
+            simpleToggleButton.setGraphic(new ImageView(image));
 
-        loadButtonGrapic();
-        exitButton.setGraphic(redButtonStates[0]);
-        exitButton.setOnMouseEntered(e -> {exitButton.setGraphic(redButtonStates[1]);
-                Main.playButtonHoverSound();});
-        exitButton.setOnMouseExited(e -> exitButton.setGraphic(redButtonStates[0]));
-        exitButton.setOnMousePressed(e -> exitButton.setGraphic(redButtonStates[2]));
-        returnButton.setGraphic(returnButtonStates[0]);
-        returnButton.setOnMouseEntered(e -> {returnButton.setGraphic(returnButtonStates[1]);
-            Main.playButtonHoverSound();});
-        returnButton.setOnMouseExited(e -> returnButton.setGraphic(returnButtonStates[0]));
-        returnButton.setOnMousePressed(e -> returnButton.setGraphic(returnButtonStates[2]));
+            if (Main.viewModel.getGenerateMazeConfiguration().equals("MyMazeGenerator"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnMy.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffMy.png"));
+            }
+            myMazeToggleButton.setGraphic(new ImageView(image));
+
+
+            if (Main.viewModel.getMazeSearchingAlgorithm().equals("DepthFirstSearch"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnDepth.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffDepth.png"));
+            }
+            dfsToggleButton.setGraphic(new ImageView(image));
+
+            if (Main.viewModel.getMazeSearchingAlgorithm().equals("BreadthFirstSearch"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnBreadth.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffBreadth.png"));
+            }
+            bfsToggleButton.setGraphic(new ImageView(image));
+
+            if (Main.viewModel.getMazeSearchingAlgorithm().equals("BestFirstSearch"))
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnBest.png"));
+            }
+            else
+            {
+                image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffBest.png"));
+            }
+            bestToggleButton.setGraphic(new ImageView(image));
+
+        exitButtonStates = new ImageView[3];
+        returnButtonStates = new ImageView[3];
+        Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates,exitButton,returnButton);
         }
         catch (FileNotFoundException e)
         {
@@ -81,28 +117,6 @@ public class OptionsMenuControl
         }
     }
 
-    public void loadButtonGrapic()
-    {
-        redButtonStates = new ImageView[3];
-        returnButtonStates = new ImageView[3];
-        try
-        {
-
-            redButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png"),100,100,false,false));
-            redButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png"),100,100,false,false));
-            redButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png"),100,100,false,false));
-            returnButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png"),100,100,false,false));
-            returnButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png"),100,100,false,false));
-            returnButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png"),100,100,false,false));
-        }
-        catch (FileNotFoundException e)
-        {
-            System.out.println("Button load failed");
-            e.printStackTrace();
-        }
-
-
-    }
 
     public void setBackGround(Stage stage)
     {
@@ -112,7 +126,7 @@ public class OptionsMenuControl
 
     public void returnButtonClicked(ActionEvent actionEvent)
         {
-            Main.playButtonExitSound();
+            Main.playButtonClickSound();
             Main.returnToMainMenu();
         }
 

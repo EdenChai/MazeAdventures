@@ -175,6 +175,7 @@ public class MyViewController implements Initializable, Observer
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();
         mazeDisplayer.loadSounds();
+
     }
 
     public void configure(MyViewModel viewModel, Scene gameMenuScene, Stage currentStage)

@@ -2,11 +2,8 @@ package Model;
 
 import Client.Client;
 import IO.MyDecompressorInputStream;
-import View.MazeDisplayer;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.AState;
 import algorithms.search.Solution;
 
 import Server.Server;
@@ -20,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -340,10 +336,23 @@ public class MyModel extends Observable implements IModel
 
     }
 
+
+    @Override
+    public String getMazeGeneratingAlgorithm()
+    {
+        return configurations.getConfiguration("mazeGeneratingAlgorithm");
+    }
+
     @Override
     public void setMazeSearchingAlgorithm(String searchingAlgorithm)
     {
         configurations.setConfiguration("mazeSearchingAlgorithm", searchingAlgorithm);
+    }
+
+    @Override
+    public String getMazeSearchingAlgorithm()
+    {
+        return configurations.getConfiguration("mazeSearchingAlgorithm");
     }
 
 

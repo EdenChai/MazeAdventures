@@ -26,6 +26,10 @@ public interface IModel
 
     void setMazeGeneratingAlgorithm(String generatingAlgorithm);
 
+    String getMazeGeneratingAlgorithm();
+
+    String getMazeSearchingAlgorithm();
+
     void setMazeSearchingAlgorithm(String searchingAlgorithm);
 
     void loadMaze(File file);

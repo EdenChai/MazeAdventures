@@ -69,6 +69,16 @@ public class MyViewModel extends Observable implements Observer {
         model.setMazeGeneratingAlgorithm(mazeGenerator);
     }
 
+    public String getGenerateMazeConfiguration()
+    {
+        return model.getMazeGeneratingAlgorithm();
+    }
+
+    public String getMazeSearchingAlgorithm()
+    {
+        return model.getMazeSearchingAlgorithm();
+    }
+
     public void setSearchingAlgorithmConfiguration(String search)
     {
         model.setMazeSearchingAlgorithm(search);

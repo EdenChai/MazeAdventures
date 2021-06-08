@@ -19,6 +19,7 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -27,23 +28,26 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button mnemonicParsing="false" onAction="#exitButtonClicked" text="X" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-                <Button mnemonicParsing="false" onAction="#returnButtonClicked" prefWidth="52.0" text="&lt;-" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets right="40.0" top="-20.0" />
+               </GridPane.margin></Button>
+                <Button fx:id="returnButton" mnemonicParsing="false" onAction="#returnButtonClicked" prefWidth="52.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <GridPane.margin>
-                        <Insets />
+                        <Insets left="60.0" top="-20.0" />
                     </GridPane.margin></Button>
-            <ToggleButton fx:id="emptyToggleButton" mnemonicParsing="false" onAction="#emptyButtonClicked" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <ToggleButton fx:id="emptyToggleButton" mnemonicParsing="false" onAction="#emptyButtonClicked" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <toggleGroup>
                   <ToggleGroup fx:id="mazeGeneratingAlgorithm" />
                </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="myMazeToggleButton" mnemonicParsing="false" onAction="#myMazeButtonClicked" toggleGroup="$mazeGeneratingAlgorithm" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <ToggleButton fx:id="dfsToggleButton" mnemonicParsing="false" text="DFS" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP">
+            <ToggleButton fx:id="myMazeToggleButton" mnemonicParsing="false" onAction="#myMazeButtonClicked" toggleGroup="$mazeGeneratingAlgorithm" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <ToggleButton fx:id="dfsToggleButton" mnemonicParsing="false" onAction="#dfsButtonClicked" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <toggleGroup>
                   <ToggleGroup fx:id="mazeSearchingAlgorithm" />
                </toggleGroup></ToggleButton>
-            <ToggleButton fx:id="bfsToggleButton" mnemonicParsing="false" text="BFS" toggleGroup="$mazeSearchingAlgorithm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-            <ToggleButton fx:id="bestToggleButton" mnemonicParsing="false" text="Best" toggleGroup="$mazeSearchingAlgorithm" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-            <ToggleButton fx:id="simpleToggleButton" mnemonicParsing="false" onAction="#simpleButtonClicked" toggleGroup="$mazeGeneratingAlgorithm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <ToggleButton fx:id="bfsToggleButton" mnemonicParsing="false" onAction="#bfsButtonClicked" toggleGroup="$mazeSearchingAlgorithm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+            <ToggleButton fx:id="bestToggleButton" mnemonicParsing="false" onAction="#bestButtonClicked" toggleGroup="$mazeSearchingAlgorithm" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+            <ToggleButton fx:id="simpleToggleButton" mnemonicParsing="false" onAction="#simpleButtonClicked" toggleGroup="$mazeGeneratingAlgorithm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             </children>
         </GridPane>
     </children>

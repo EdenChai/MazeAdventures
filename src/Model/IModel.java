@@ -21,4 +21,8 @@ public interface IModel
     void assignObserver(Observer o);
 
     void shutDown();
+
+    void setMazeGeneratingAlgorithm(String generatingAlgorithm);
+
+    void setMazeSearchingAlgorithm(String searchingAlgorithm);
 }

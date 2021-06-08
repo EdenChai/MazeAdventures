@@ -129,6 +129,7 @@ public class Main extends Application {
     public static void configureControllers()
     {
         optionsMenuControl.configureButtons();
+        mainMenuControl.configureButtons();
     }
 
     public static void main(String[] args) {

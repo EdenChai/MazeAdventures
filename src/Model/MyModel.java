@@ -39,13 +39,14 @@ public class MyModel extends Observable implements IModel
     private int characterRow;
     private int characterCol;
     private boolean isSolved;
+    public Configurations configurations;
 
     private ExecutorService threadPool = Executors.newCachedThreadPool();
 
 
     public MyModel()
     {
-//        Configurations config = Configurations.initialize();
+        configurations = Configurations.initialize();
 
         // Initializing servers
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -331,15 +332,17 @@ public class MyModel extends Observable implements IModel
         catch (Exception e) { return false; }
     }
 
+    @Override
     public void setMazeGeneratingAlgorithm(String generatingAlgorithm)
     {
-        //Configurations.setConfiguration(mazeGeneratingAlgorithm, generatingAlgorithm)
+        configurations.setConfiguration("mazeGeneratingAlgorithm", generatingAlgorithm);
 
     }
 
+    @Override
     public void setMazeSearchingAlgorithm(String searchingAlgorithm)
     {
-        //Configurations.setConfiguration(mazeSearchingAlgorithm, searchingAlgorithm)
+        configurations.setConfiguration("mazeSearchingAlgorithm", searchingAlgorithm);
     }
 
 

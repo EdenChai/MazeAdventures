@@ -128,7 +128,8 @@ public class MainMenuControl
         Main.goToGameMenu();
     }
 
-    public void loadGameButtonClicked(ActionEvent actionEvent){
-        //Main.load();
+    public void loadGameButtonClicked(ActionEvent actionEvent)
+    {
+        Main.load();
     }
 }

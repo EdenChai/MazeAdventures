@@ -4,6 +4,8 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 
+import java.io.File;
+
 import java.util.Observer;
 
 public interface IModel
@@ -25,4 +27,8 @@ public interface IModel
     void setMazeGeneratingAlgorithm(String generatingAlgorithm);
 
     void setMazeSearchingAlgorithm(String searchingAlgorithm);
+
+    void loadMaze(File file);
+
+    void saveMaze(File file);
 }

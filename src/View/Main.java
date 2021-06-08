@@ -9,11 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+//test
 
 public class Main extends Application {
 
@@ -210,5 +213,27 @@ public class Main extends Application {
     {
         System.out.println("Game is shutting down");
         Main.viewModel.model.shutDown();
+    }
+
+    public static void load()
+    {
+        try
+        {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files", "*.maze"));
+            File loadFile = fileChooser.showOpenDialog(currentStage);
+            if (loadFile != null)
+            {
+                Main.goToGameMenu();
+                viewModel.loadGame(loadFile);
+                myViewController.mazeGenerated();
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
     }
 }

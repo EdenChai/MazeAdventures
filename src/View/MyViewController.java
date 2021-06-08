@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -130,11 +132,22 @@ public class MyViewController implements Initializable, Observer
         {
             case "maze generated" -> mazeGenerated();
             case "player moved" -> playerMoved();
-            case  "player looked to the left" ->playerLooked("left");
-            case  "player looked to the right" ->playerLooked("right");
+            case "player looked to the left" ->playerLooked("left");
+            case "player looked to the right" ->playerLooked("right");
             case "maze solved" -> mazeSolved();
+            case "loaded"-> updateRowsAndCols();
+
             default -> System.out.println("Not implemented change: " + change);
         }
+    }
+
+    private void updateRowsAndCols()
+    {
+        updatePlayerRow.set(myViewModel.model.getCharacterRow() + "");
+        updatePlayerCol.set(myViewModel.model.getCharacterCol() + "");
+        mazeDisplayer.setPlayerPosition(myViewModel.model.getCharacterRow(), myViewModel.model.getCharacterCol());
+        setUpdatePlayerRow(myViewModel.model.getCharacterRow());
+        setUpdatePlayerCol(myViewModel.model.getCharacterCol());
     }
 
     private void playerLooked(String direction)
@@ -154,7 +167,7 @@ public class MyViewController implements Initializable, Observer
 
 
 
-    private void mazeGenerated()
+    public void mazeGenerated()
     {
         mazeDisplayer.playerCharacter.set("Tom"); //TODO - change this in options menu
         mazeDisplayer.setTerrainType("grass"); //TODO - set the terrain type from the options menu (possible)
@@ -182,8 +195,20 @@ public class MyViewController implements Initializable, Observer
                     System.exit(0);
                 }
             });
+        }
+    }
 
-
+    public void SaveMaze(ActionEvent actionEvent) throws FileNotFoundException
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Maze Files", "*.maze")
+        );
+        fileChooser.setInitialFileName("myMaze");
+        File saveFile = fileChooser.showSaveDialog(currentStage);
+        if (saveFile != null) {
+            myViewModel.saveGame(saveFile);
         }
     }
 }

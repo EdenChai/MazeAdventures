@@ -92,7 +92,7 @@ public class MazeDisplayer extends Canvas
         draw();
     }
 
-    private void draw()
+    public void draw()
     {
         if (maze == null) return;
 

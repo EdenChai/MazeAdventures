@@ -5,6 +5,7 @@ import IO.MyDecompressorInputStream;
 import View.MazeDisplayer;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
 
@@ -356,6 +357,95 @@ public class MyModel extends Observable implements IModel
             solveSearchProblemServer.stop();
         }
         threadPool.shutdown();
+    }
+
+    @Override
+    public void saveMaze(File file)
+    {
+        File endFile = new File(file.getPath());
+        int [][] grid = maze.getMaze();
+        try {
+            /*game state params --> save to file*/
+            endFile.createNewFile();
+            StringBuilder  builder = new StringBuilder();
+            builder.append(characterRow+"\n");
+            builder.append(characterCol+"\n");
+            builder.append(maze.getGoalPosition().getRowIndex()+"\n");
+            builder.append(maze.getGoalPosition().getColumnIndex()+"\n");
+            builder.append(grid.length+"\n");
+            builder.append(grid[0].length+"\n");
+            /*write maze grid to file */
+            for(int i = 0; i < grid.length; i++)
+            {
+                for(int j = 0; j < grid[0].length; j++)
+                {
+                    builder.append(grid[i][j]+"");
+                    if(j < grid[0].length - 1)
+                        builder.append(",");
+                }
+                builder.append("\n");
+            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
+            writer.write(builder.toString());
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void loadMaze(File file)
+    {
+        int goalRowIdx = 0, goalColIdx = 0 , playerRowIdx = 0, playerColIdx= 0, mazeNumOfRows = 0, mazeNumOfCols = 0;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            /*read 6 lines from file -- the saved parameters of a maze game */
+            for( int i = 0 ; i < 6 ; i++){
+                String line = br.readLine();
+                if (line != null) {
+                    if(i == 0)
+                        playerRowIdx = Integer.parseInt(line);
+                    if(i == 1)
+                        playerColIdx = Integer.parseInt(line);
+                    if(i == 2)
+                        goalRowIdx = Integer.parseInt(line);
+                    if(i == 3)
+                        goalColIdx = Integer.parseInt(line);
+                    if(i == 4)
+                        mazeNumOfRows = Integer.parseInt(line);
+                    if(i == 5)
+                        mazeNumOfCols = Integer.parseInt(line);
+                }
+            }
+            int[][] grid = new int[mazeNumOfRows][mazeNumOfCols];
+            String line = "";
+            int row = 0;
+            while ((line = br.readLine()) != null) {
+                String[] cols = line.split(",");
+                int col = 0;
+                for (String c : cols) {
+                    grid[row][col] = Integer.parseInt(c);
+                    col++;
+                }
+                row++;
+            }
+            br.close();
+            Position start = new Position(playerRowIdx, playerColIdx);
+            Position goal  = new Position(goalRowIdx, goalColIdx);
+            this.maze = new Maze(mazeNumOfRows, mazeNumOfCols);
+            this.maze.setStartPosition(start);
+            this.maze.setGoalPosition(goal);
+            this.maze.setMaze(grid);
+            this.characterCol = playerColIdx;
+            this.characterRow = playerRowIdx;
+
+            setChanged();
+            notifyObservers("loaded");
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 

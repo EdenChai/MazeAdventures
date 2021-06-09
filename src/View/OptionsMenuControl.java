@@ -30,7 +30,7 @@ public class OptionsMenuControl
     {
         emptyToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
         emptyToggleButton.setPickOnBounds(false);
-        emptyToggleButton.prefHeightProperty().bind(Bindings.divide(Main.getCurrentStage().widthProperty(), 10.0));
+        emptyToggleButton.prefHeightProperty().bind(Bindings.divide(Main.getOptimalStage().widthProperty(), 10.0));
         simpleToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
         simpleToggleButton.setPickOnBounds(false);
         myMazeToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
@@ -127,8 +127,9 @@ public class OptionsMenuControl
     public void returnButtonClicked(ActionEvent actionEvent)
         {
             Main.playButtonClickSound();
-            Main.returnToMainMenu();
+            Main.returnToLastScene();
         }
+
 
     public void exitButtonClicked(ActionEvent actionEvent)
     {

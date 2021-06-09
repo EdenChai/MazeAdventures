@@ -11,15 +11,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class Main extends Application {
 
@@ -30,20 +30,28 @@ public class Main extends Application {
     public static HelpMenuControl helpMenuControl;
     public static OptionsMenuControl optionsMenuControl;
     public static MyViewController myViewController;
-    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader;
-    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene;
-    public static Stage currentStage;
-    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure;
+    public static WarningMenuControl warningMenuControl;
+    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader,warningMenuLoader;
+    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene,warningMenuScene, lastScene;
+    public static Stage optimalStage, warningStage, borderStage, currentStage;
+    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure,warningMenuStructure;
     public static MediaPlayer mainMenuPlayer;
+
+
 
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         //Initialize the current stage
-        currentStage = primaryStage;
-        currentStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
-        currentStage.initStyle(StageStyle.DECORATED);
+        optimalStage = primaryStage;
+        borderStage = new Stage();
+        optimalStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
+        borderStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
+        optimalStage.initStyle(StageStyle.TRANSPARENT);
+        borderStage.initStyle(StageStyle.DECORATED);
+        currentStage = optimalStage;
+
 
         //Load loaders
         mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
@@ -51,6 +59,7 @@ public class Main extends Application {
         helpMenuLoader = new FXMLLoader(getClass().getResource("../View/HelpMenuStructure.fxml"));
         optionsMenuLoader = new FXMLLoader(getClass().getResource("../View/OptionsMenuStructure.fxml"));
         gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MazeDisplayerStructure.fxml"));
+        warningMenuLoader = new FXMLLoader(getClass().getResource("../View/WarningMenuStructure.fxml"));
 
         //Load FXML
         mainMenuStructure = mainMenuLoader.load();
@@ -58,6 +67,7 @@ public class Main extends Application {
         helpMenuStructure =helpMenuLoader.load();
         optionsMenuStructure = optionsMenuLoader.load();
         gameMenuStructure = gameMenuLoader.load();
+        warningMenuStructure = warningMenuLoader.load();
 
         //Load controllers
         mainMenuControl = mainMenuLoader.getController();
@@ -65,6 +75,7 @@ public class Main extends Application {
         helpMenuControl= helpMenuLoader.getController();
         optionsMenuControl= optionsMenuLoader.getController();
         myViewController = gameMenuLoader.getController();
+        warningMenuControl = warningMenuLoader.getController();
 
 
         //Load scenes
@@ -73,6 +84,15 @@ public class Main extends Application {
         optionsMenuScene = new Scene(optionsMenuStructure,899,952);
         mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
         gameMenuScene = new Scene(gameMenuStructure,899,952);
+        warningMenuScene = new Scene(warningMenuStructure,700,350);
+
+        //Set Sences background
+        creditsMenuScene.setFill(Color.TRANSPARENT);
+        helpMenuScene .setFill(Color.TRANSPARENT);
+        optionsMenuScene.setFill(Color.TRANSPARENT);
+        mainMenuScene .setFill(Color.TRANSPARENT);
+        gameMenuScene.setFill(Color.TRANSPARENT);
+        warningMenuScene.setFill(Color.TRANSPARENT);
 
         //Load the game stage control
         FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
@@ -96,39 +116,30 @@ public class Main extends Application {
         configureControllers();
 
         //Load the main menu
-        currentStage.setScene(mainMenuScene);
+        lastScene =mainMenuScene;
+        optimalStage.setScene(mainMenuScene);
+        borderStage.setScene(gameMenuScene);
 
+
+        //Load the warning menu
+        warningStage = new Stage();
+        warningStage.setScene(warningMenuScene);
+        warningStage.initModality(Modality.APPLICATION_MODAL);
+        warningStage.setResizable(false);
+        warningStage.setAlwaysOnTop(true);
+        warningStage.initStyle(StageStyle.UNDECORATED);
 
         //Calibrate all scene backgrounds
         mainMenuControl.setBackGround(currentStage);
         creditsMenuControl.setBackGround(currentStage);
         helpMenuControl.setBackGround(currentStage);
         optionsMenuControl.setBackGround(currentStage);
-
-        currentStage.setResizable(true);
-        currentStage.show();
-
-        //currentStage.setScene(creditsMenuScene);
-
-/*
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MazeDisplayerStructure.fxml")); // Original Maze Stage
-        Parent root = fxmlLoader.load();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1000, 700));
-        primaryStage.show();
-
-        model = new MyModel();
-        viewModel = new MyViewModel(model);
-        model.addObserver(viewModel);
-//        IModel model = new MyModel();
-//        MyViewModel myViewModel = new MyViewModel(model);
-        MyViewController myViewController = fxmlLoader.getController();
-        myViewController.setViewModel(viewModel);
-
- */
+        myViewController.setBackGround(borderStage);
 
 
-
+        optimalStage.setResizable(false);
+        borderStage.setResizable(true);
+        optimalStage.show();
 
     }
 
@@ -138,6 +149,7 @@ public class Main extends Application {
         mainMenuControl.configureButtons();
         creditsMenuControl.configureButtons();
         helpMenuControl.configureButtons();
+        myViewController.configureButtons();
     }
 
     public static void main(String[] args) {
@@ -146,39 +158,67 @@ public class Main extends Application {
 
     public static void returnToMainMenu()
     {
+        lastScene = mainMenuScene;
+        borderStage.hide();
+        optimalStage.show();
         playButtonClickSound();
-        currentStage.setScene(mainMenuScene);
+        optimalStage.setScene(mainMenuScene);
+    }
+
+    public static void returnToMainMenuFromWarning()
+    {
+        warningStage.hide();
+        optimalStage.show();
+    }
+
+    public static void returnToLastScene()
+    {
+        currentStage.setScene(lastScene);
+    }
+
+    public static void showWarningMenu()
+    {
+        warningStage.showAndWait();
     }
 
     public static void goToCreditsMenu()
     {
+        borderStage.hide();
+        optimalStage.show();
         playButtonClickSound();
-        currentStage.setScene(creditsMenuScene);
+        optimalStage.setScene(creditsMenuScene);
     }
 
     public static void goToHelpMenu()
     {
+        borderStage.hide();
+        optimalStage.show();
         playButtonClickSound();
-        currentStage.setScene(helpMenuScene);
+        optimalStage.setScene(helpMenuScene);
     }
 
     public static void goToOptionsMenu()
     {
+        borderStage.hide();
+        optimalStage.show();
         playButtonClickSound();
-        currentStage.setScene(optionsMenuScene);
+        optimalStage.setScene(optionsMenuScene);
     }
 
-    public static Stage getCurrentStage()
+    public static Stage getOptimalStage()
     {
-        return currentStage;
+        return optimalStage;
     }
 
     public static void goToGameMenu()
     {
-        myViewController.configure(viewModel,gameMenuScene,currentStage);
+        lastScene = gameMenuScene;
+        optimalStage.hide();
+        borderStage.show();
+        myViewController.configure(viewModel,gameMenuScene,borderStage);
         viewModel.addObserver(myViewController);
         playButtonClickSound();
-        currentStage.setScene(gameMenuScene);
+        borderStage.setScene(gameMenuScene);
     }
 
     public static void playButtonHoverSound()
@@ -260,9 +300,10 @@ public class Main extends Application {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files", "*.maze"));
-            File loadFile = fileChooser.showOpenDialog(currentStage);
+            File loadFile = fileChooser.showOpenDialog(optimalStage);
             if (loadFile != null)
             {
+                lastScene = mainMenuScene;
                 Main.goToGameMenu();
                 viewModel.loadGame(loadFile);
                 myViewController.mazeGenerated();

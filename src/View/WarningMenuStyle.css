@@ -2,21 +2,6 @@
 {
     -fx-background-color: transparent;
 }
-#exitButton
-{
-    -fx-background-color: transparent;
-}
-
-#exitButton:hover
-{
-    -fx-background-color: transparent;
-}
-
-#exitButton:pressed
-{
-    -fx-background-color: transparent;
-}
-
 #returnButton
 {
     -fx-background-color: transparent;

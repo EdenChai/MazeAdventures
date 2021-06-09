@@ -10,8 +10,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,8 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -47,6 +49,108 @@ public class MyViewController implements Initializable, Observer
     public MazeDisplayer mazeDisplayer;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
+
+    /**************************Design***************************/
+    public ImageView BackGround;
+    public Button generateButt, saveButt, loadButt,returnToMainButt,exitButt,optionsButt,helpButt, solveButt;
+    public ImageView[] generateButtonStates,saveButtonState,loadButtonStates,returnButtonStates,exitButtonStates,optionsButtonStates,helpButtonStates,solveButtonStates;
+
+    public void configureButtons()
+    {
+        loadButtonGrapic();
+
+        setButtonFunctions(exitButt,exitButtonStates);
+        setButtonFunctions(generateButt,generateButtonStates);
+        setButtonFunctions(loadButt,loadButtonStates);
+        setButtonFunctions(saveButt,saveButtonState);
+        setButtonFunctions(returnToMainButt,returnButtonStates);
+        setButtonFunctions(optionsButt,optionsButtonStates);
+        setButtonFunctions(helpButt,helpButtonStates);
+        setButtonFunctions(solveButt,solveButtonStates);
+
+    }
+
+    public void setButtonFunctions(Button button, ImageView[] imageView)
+    {
+        button.setGraphic(imageView[0]);
+        button.setOnMouseEntered(e -> {button.setGraphic(imageView[1]);
+            Main.playButtonHoverSound();});
+        button.setOnMouseExited(e -> button.setGraphic(imageView[0]));
+        button.setOnMousePressed(e -> button.setGraphic(imageView[2]));
+    }
+
+
+    public void loadButtonGrapic()
+    {
+        generateButtonStates = new ImageView[3];
+        loadButtonStates = new ImageView[3];
+        saveButtonState = new ImageView[3];
+        returnButtonStates = new ImageView[3];
+        exitButtonStates = new ImageView[3];
+        optionsButtonStates = new ImageView[3];
+        helpButtonStates = new ImageView[3];
+        solveButtonStates = new ImageView[3];
+        exitButtonStates[0] = loadImageView("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png", 100, 100, false, false);
+        exitButtonStates[1] = loadImageView("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png", 100, 100, false, false);
+        exitButtonStates[2] = loadImageView("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png", 100, 100, false, false);
+        generateButtonStates[0] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonGenerateMazeUnPressed.png", 200, 100, false, false);
+        generateButtonStates[1] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonGenerateMazeHover.png", 200, 100, false, false);
+        generateButtonStates[2] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonGenerateMazePressed.png", 200, 100, false, false);
+        loadButtonStates[0] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenLoadGameButtonUnPressed.png", 200, 100, false, false);
+        loadButtonStates[1] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenLoadGameHover.png", 200, 100, false, false);
+        loadButtonStates[2] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenLoadGameButtonPressed.png", 200, 100, false, false);
+        saveButtonState[0] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenSaveGameButtonUnPressed.png", 200, 100, false, false);
+        saveButtonState[1] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenSaveGameHover.png", 200, 100, false, false);
+        saveButtonState[2] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenSaveGameButtonPressed.png", 200, 100, false, false);
+        returnButtonStates[0] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png", 70, 70, false, false);
+        returnButtonStates[1] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png", 70, 70, false, false);
+        returnButtonStates[2] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png", 70, 70, false, false);
+        optionsButtonStates[0] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonUnPressed.png", 70, 70, false, false);
+        optionsButtonStates[1] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonHover.png", 70, 70, false, false);
+        optionsButtonStates[2] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonPressed.png", 70, 70, false, false);
+        helpButtonStates[0] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonUnPressed.png", 70, 70, false, false);
+        helpButtonStates[1] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonHover.png", 70, 70, false, false);
+        helpButtonStates[2] = loadImageView("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonPressed.png", 70, 70, false, false);
+        solveButtonStates[0] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenShowSolutionButtonUnPressed.png", 200, 100, false, false);
+        solveButtonStates[1] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenShowSolutionHover.png", 200, 100, false, false);
+        solveButtonStates[2] = loadImageView("./resources/UI/Buttons/GreenButtons/GreenShowSolutionButtonPressed.png", 200, 100, false, false);
+    }
+
+    public ImageView loadImageView(String path,double num1, double num2, boolean bool1, boolean bool2)
+    {
+        try
+        {
+            return new ImageView(new Image(new FileInputStream(path),num1,num2,bool1,bool2));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Button load failed");
+            e.printStackTrace();
+        }
+        return null;
+    }
+//    public ImageView loadImageView(String path)
+//    {
+//        try
+//        {
+//            return new ImageView(new Image(new FileInputStream(path)));
+//        }
+//        catch (FileNotFoundException e)
+//        {
+//            System.out.println("Button load failed");
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
+    public void setBackGround(Stage stage)
+    {
+        BackGround.fitWidthProperty().bind(stage.widthProperty());
+        BackGround.fitHeightProperty().bind(stage.heightProperty());
+    }
+
+    /*********************************************************/
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -77,10 +181,20 @@ public class MyViewController implements Initializable, Observer
 
     public void generateMaze(ActionEvent actionEvent)
     {
-        int rows = Integer.parseInt(textField_mazeRows.getText());
-        int cols = Integer.parseInt(textField_mazeColumns.getText());
+        try
+        {
+            int rows = Integer.parseInt(textField_mazeRows.getText());
+            int cols = Integer.parseInt(textField_mazeColumns.getText());
+            if (rows <2 || rows >1000 || cols <2 || cols >100)
+                throw new Exception();
+            myViewModel.generateMaze(rows, cols);
+        }
+        catch (Exception e)
+        {
+            Main.showWarningMenu();
+            return;
+        }
 
-        myViewModel.generateMaze(rows, cols);
     }
 
     public void solveMaze(ActionEvent actionEvent)
@@ -175,7 +289,6 @@ public class MyViewController implements Initializable, Observer
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();
         mazeDisplayer.loadSounds();
-
     }
 
     public void configure(MyViewModel viewModel, Scene gameMenuScene, Stage currentStage)
@@ -211,5 +324,30 @@ public class MyViewController implements Initializable, Observer
         if (saveFile != null) {
             myViewModel.saveGame(saveFile);
         }
+    }
+
+
+    public void helpButtClicked(ActionEvent actionEvent)
+    {
+        Main.goToHelpMenu();
+    }
+
+    public void optionsButtClicked(ActionEvent actionEvent)
+    {
+        Main.goToOptionsMenu();
+    }
+
+    public void returnLastSceneClicked(ActionEvent actionEvent)
+    {
+        Main.returnToMainMenu();
+    }
+
+    public void loadButtClicked(ActionEvent actionEvent) { Main.load(); }
+
+    public void exitButtClicked(ActionEvent actionEvent)
+    {
+        Main.viewModel.model.shutDown();
+        Platform.exit();
+        System.exit(0);
     }
 }

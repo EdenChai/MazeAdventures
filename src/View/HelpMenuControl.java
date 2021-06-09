@@ -30,7 +30,7 @@ public class HelpMenuControl
     public void returnButtonClicked(ActionEvent actionEvent)
     {
         Main.playButtonClickSound();
-        Main.returnToMainMenu();
+        Main.returnToLastScene();
     }
 
     public void exitButtonClicked(ActionEvent actionEvent)

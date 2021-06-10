@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +22,10 @@ public class OptionsMenuControl
     public ToggleButton dfsToggleButton;
     public ToggleButton bfsToggleButton;
     public ToggleButton bestToggleButton;
+    public ToggleButton tomToggleButton;
+    public ToggleButton jerryToggleButton;
+    public ToggleButton grassToggleButton;
+    public ToggleButton sandToggleButton;
     public Button exitButton;
     public Button returnButton;
     public ImageView[] exitButtonStates;
@@ -29,18 +34,16 @@ public class OptionsMenuControl
     public void configureButtons()
     {
         emptyToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        emptyToggleButton.setPickOnBounds(false);
         emptyToggleButton.prefHeightProperty().bind(Bindings.divide(Main.getOptimalStage().widthProperty(), 10.0));
         simpleToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        simpleToggleButton.setPickOnBounds(false);
         myMazeToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        myMazeToggleButton.setPickOnBounds(false);
         dfsToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        dfsToggleButton.setPickOnBounds(false);
         bfsToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        bestToggleButton.setPickOnBounds(false);
         bestToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
-        bestToggleButton.setPickOnBounds(false);
+        tomToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
+        jerryToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
+        grassToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
+        sandToggleButton.setOnMouseEntered(e -> Main.playButtonHoverSound());
 
         Image image;
         try
@@ -105,6 +108,21 @@ public class OptionsMenuControl
                 image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffBest.png"));
             }
             bestToggleButton.setGraphic(new ImageView(image));
+
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnTom.png"));
+            tomToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffJerry.png"));
+            jerryToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnGrass.png"));
+            grassToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffSand.png"));
+            sandToggleButton.setGraphic(new ImageView(image));
+
+
 
         exitButtonStates = new ImageView[3];
         returnButtonStates = new ImageView[3];
@@ -253,5 +271,84 @@ public class OptionsMenuControl
         {
             System.out.println("Tile image not found");
         }
+    }
+
+    public void tomButtonClicked(ActionEvent actionEvent)
+    {
+        Main.playButtonAcceptSound();
+        Main.myViewController.setPlayerCharacter("Tom");
+        try
+        {
+        Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnTom.png"));
+        tomToggleButton.setGraphic(new ImageView(image));
+
+        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffJerry.png"));
+        jerryToggleButton.setGraphic(new ImageView(image));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Character image not found");
+        }
+        Main.myViewController.mazeDisplayer.draw();
+    }
+
+    public void jerryButtonClicked(ActionEvent actionEvent)
+    {
+        Main.playButtonAcceptSound();
+        Main.myViewController.setPlayerCharacter("Jerry");
+        try
+        {
+            Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffTom.png"));
+            tomToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnJerry.png"));
+            jerryToggleButton.setGraphic(new ImageView(image));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Character image not found");
+        }
+        Main.myViewController.mazeDisplayer.draw();
+
+    }
+
+    public void grassButtonClicked(ActionEvent actionEvent)
+    {
+        Main.playButtonAcceptSound();
+        Main.myViewController.setTerrainType("grass");
+        try
+        {
+            Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnGrass.png"));
+            grassToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffSand.png"));
+            sandToggleButton.setGraphic(new ImageView(image));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Terrain image not found");
+        }
+        Main.myViewController.mazeDisplayer.draw();
+        Main.myViewController.setBackGroundType("Grass");
+    }
+
+    public void sandButtonClicked(ActionEvent actionEvent)
+    {
+        Main.playButtonAcceptSound();
+        Main.myViewController.setTerrainType("sand");
+        try
+        {
+            Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffGrass.png"));
+            grassToggleButton.setGraphic(new ImageView(image));
+
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnSand.png"));
+            sandToggleButton.setGraphic(new ImageView(image));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Terrain image not found");
+        }
+        Main.myViewController.mazeDisplayer.draw();
+        Main.myViewController.setBackGroundType("Sand");
     }
 }

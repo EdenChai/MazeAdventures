@@ -84,7 +84,7 @@ public class Main extends Application {
         optionsMenuScene = new Scene(optionsMenuStructure,899,952);
         mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
         gameMenuScene = new Scene(gameMenuStructure,899,952);
-        warningMenuScene = new Scene(warningMenuStructure,700,350);
+        warningMenuScene = new Scene(warningMenuStructure,790,344);
 
         //Set Sences background
         creditsMenuScene.setFill(Color.TRANSPARENT);
@@ -127,7 +127,7 @@ public class Main extends Application {
         warningStage.initModality(Modality.APPLICATION_MODAL);
         warningStage.setResizable(false);
         warningStage.setAlwaysOnTop(true);
-        warningStage.initStyle(StageStyle.UNDECORATED);
+        warningStage.initStyle(StageStyle.TRANSPARENT);
 
         //Calibrate all scene backgrounds
         mainMenuControl.setBackGround(currentStage);
@@ -135,6 +135,7 @@ public class Main extends Application {
         helpMenuControl.setBackGround(currentStage);
         optionsMenuControl.setBackGround(currentStage);
         myViewController.setBackGround(borderStage);
+
 
 
         optimalStage.setResizable(false);
@@ -150,6 +151,7 @@ public class Main extends Application {
         creditsMenuControl.configureButtons();
         helpMenuControl.configureButtons();
         myViewController.configureButtons();
+        warningMenuControl.configureButtons();
     }
 
     public static void main(String[] args) {
@@ -173,12 +175,30 @@ public class Main extends Application {
 
     public static void returnToLastScene()
     {
-        currentStage.setScene(lastScene);
+        if (lastScene == gameMenuScene)
+        {
+            optimalStage.hide();
+            borderStage.show();
+            borderStage.setScene(lastScene);
+        }
+        else
+        {
+            optimalStage.show();
+            borderStage.hide();
+            optimalStage.setScene(lastScene);
+        }
     }
 
     public static void showWarningMenu()
     {
+        playButtonExitSound();
         warningStage.showAndWait();
+    }
+
+    public static void exitWarningMenu()
+    {
+        playButtonClickSound();
+        warningStage.hide();
     }
 
     public static void goToCreditsMenu()

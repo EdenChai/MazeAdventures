@@ -1,5 +1,4 @@
 .root {
-    -fx-background-color: bisque;
 }
 
 Button {
@@ -18,4 +17,102 @@ Button:hover {
     -fx-text-fill: -fx-text-base-color;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
+}
+
+#optionsButt
+{
+    -fx-background-color: transparent;
+}
+#optionsButt:hover
+{
+    -fx-background-color: transparent;
+}
+#optionsButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#helpButt
+{
+    -fx-background-color: transparent;
+}
+#helpButt:hover
+{
+    -fx-background-color: transparent;
+}
+#helpButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#returnToMainButt
+{
+    -fx-background-color: transparent;
+}
+#returnToMainButt:hover
+{
+    -fx-background-color: transparent;
+}
+#returnToMainButt:pressed
+{
+    -fx-background-color: transparent;
+}
+
+#generateButt
+{
+    -fx-background-color: transparent;
+}
+#generateButt:hover
+{
+    -fx-background-color: transparent;
+}
+#generateButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#solveButt
+{
+    -fx-background-color: transparent;
+}
+#solveButt:hover
+{
+    -fx-background-color: transparent;
+}
+#solveButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#saveButt
+{
+    -fx-background-color: transparent;
+}
+#saveButt:hover
+{
+    -fx-background-color: transparent;
+}
+#saveButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#loadButt
+{
+    -fx-background-color: transparent;
+}
+#loadButt:hover
+{
+    -fx-background-color: transparent;
+}
+#loadButt:pressed
+{
+    -fx-background-color: transparent;
+}
+#exitButt
+{
+    -fx-background-color: transparent;
+}
+#exitButt:hover
+{
+    -fx-background-color: transparent;
+}
+#exitButt:pressed
+{
+    -fx-background-color: transparent;
 }

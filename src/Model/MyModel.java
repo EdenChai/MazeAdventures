@@ -150,8 +150,6 @@ public class MyModel extends Observable implements IModel
                 if (isMoveValid(characterRow - 1, characterCol))
                 {
                     characterRow--;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -160,8 +158,6 @@ public class MyModel extends Observable implements IModel
                 if (isMoveValid(characterRow + 1, characterCol))
                 {
                     characterRow++;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -172,8 +168,6 @@ public class MyModel extends Observable implements IModel
                 if (isMoveValid(characterRow, characterCol-1))
                 {
                     characterCol--;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -185,8 +179,6 @@ public class MyModel extends Observable implements IModel
                 if (isMoveValid(characterRow, characterCol+1))
                 {
                     characterCol++;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -200,8 +192,6 @@ public class MyModel extends Observable implements IModel
                 {
                     characterRow--;
                     characterCol--;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -213,8 +203,6 @@ public class MyModel extends Observable implements IModel
                 {
                     characterRow++;
                     characterCol--;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -226,8 +214,6 @@ public class MyModel extends Observable implements IModel
                 {
                     characterRow--;
                     characterCol++;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
 
@@ -239,15 +225,23 @@ public class MyModel extends Observable implements IModel
                 {
                     characterRow++;
                     characterCol++;
-                    setChanged();
-                    notifyObservers("player moved");
                 }
                 break;
             default:
                 return;
         }
-        //TODO: need to check if is the goal position
-
+        if(getCharacterRow() == maze.getGoalPosition().getRowIndex() && getCharacterRow() == maze.getGoalPosition().getColumnIndex())
+        {
+            setChanged();
+            notifyObservers("player winning");
+        }
+        else
+        {
+            maze.setStartPosition(new Position(getCharacterRow(), getCharacterCol()));
+            solveMaze();
+            setChanged();
+            notifyObservers("player moved");
+        }
     }
 
 

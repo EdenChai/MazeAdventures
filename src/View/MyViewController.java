@@ -129,24 +129,37 @@ public class MyViewController implements Initializable, Observer
         }
         return null;
     }
-//    public ImageView loadImageView(String path)
-//    {
-//        try
-//        {
-//            return new ImageView(new Image(new FileInputStream(path)));
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            System.out.println("Button load failed");
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+
+    public ImageView loadImageView(String path)
+    {
+        try
+        {
+            return new ImageView(new Image(new FileInputStream(path)));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Button load failed");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void setBackGround(Stage stage)
     {
         BackGround.fitWidthProperty().bind(stage.widthProperty());
         BackGround.fitHeightProperty().bind(stage.heightProperty());
+    }
+
+    public void setBackGroundType(String type)
+    {
+        try
+        {
+            BackGround.setImage(new Image(new FileInputStream("./resources/UI/UI/GameStage_"+type+".png")));
+        }
+        catch (Exception e)
+        {
+            System.out.println("Background terrain not found");
+        }
     }
 
     /*********************************************************/
@@ -183,6 +196,7 @@ public class MyViewController implements Initializable, Observer
     {
         try
         {
+            mazeDisplayer.solutionIsShowing = false;
             int rows = Integer.parseInt(textField_mazeRows.getText());
             int cols = Integer.parseInt(textField_mazeColumns.getText());
             if (rows <2 || rows >1000 || cols <2 || cols >100)
@@ -197,12 +211,18 @@ public class MyViewController implements Initializable, Observer
 
     }
 
-    public void solveMaze(ActionEvent actionEvent)
+    public void solutionButton(ActionEvent actionEvent)
     {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Solving maze...");
-        alert.show();
-        myViewModel.solveMaze();
+        if (mazeDisplayer.solutionIsShowing)
+        {
+            mazeDisplayer.solutionIsShowing = false;
+            mazeDisplayer.draw();
+        }
+        else
+        {
+            mazeDisplayer.solutionIsShowing = true;
+            myViewModel.solveMaze();
+        }
     }
 
     public void openFile(ActionEvent actionEvent)
@@ -228,6 +248,7 @@ public class MyViewController implements Initializable, Observer
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
     }
+
     public void setPlayerDirection(String direction)
     {
         mazeDisplayer.setPlayerDirection(direction);
@@ -248,11 +269,17 @@ public class MyViewController implements Initializable, Observer
             case "player moved" -> playerMoved();
             case "player looked to the left" ->playerLooked("left");
             case "player looked to the right" ->playerLooked("right");
-            case "maze solved" -> mazeSolved();
+            case "maze solved" -> showSolution();
             case "loaded"-> updateRowsAndCols();
+            case "player winning" -> playerWinning();
 
             default -> System.out.println("Not implemented change: " + change);
         }
+    }
+
+    private void playerWinning()
+    {
+        System.out.println("player winning");
     }
 
     private void updateRowsAndCols()
@@ -269,9 +296,10 @@ public class MyViewController implements Initializable, Observer
         setPlayerDirection(direction);
     }
 
-    private void mazeSolved()
+    private void showSolution()
     {
-        mazeDisplayer.setSolution(myViewModel.getSolution());
+        mazeDisplayer.solution = Main.viewModel.model.getSolution();
+        mazeDisplayer.drawSolution();
     }
 
     private void playerMoved()
@@ -279,12 +307,8 @@ public class MyViewController implements Initializable, Observer
         setPlayerPosition(myViewModel.getPlayerRow(), myViewModel.getPlayerCol());
     }
 
-
-
     public void mazeGenerated()
     {
-        mazeDisplayer.playerCharacter.set("Tom"); //TODO - change this in options menu
-        mazeDisplayer.setTerrainType("grass"); //TODO - set the terrain type from the options menu (possible)
         mazeDisplayer.loadCharacters();
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();
@@ -297,10 +321,11 @@ public class MyViewController implements Initializable, Observer
         textField_mazeColumns.clear();
         if(viewModel !=null && gameMenuScene!= null && currentStage != null)
         {
-            this.myViewModel= viewModel;
+            this.myViewModel = viewModel;
             this.gameMenuScene = gameMenuScene;
-            this.currentStage=currentStage;
-            currentStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+            this.currentStage = currentStage;
+            currentStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+            {
                 @Override
                 public void handle(WindowEvent e)
                 {
@@ -321,7 +346,8 @@ public class MyViewController implements Initializable, Observer
         );
         fileChooser.setInitialFileName("myMaze");
         File saveFile = fileChooser.showSaveDialog(currentStage);
-        if (saveFile != null) {
+        if (saveFile != null)
+        {
             myViewModel.saveGame(saveFile);
         }
     }
@@ -349,5 +375,18 @@ public class MyViewController implements Initializable, Observer
         Main.viewModel.model.shutDown();
         Platform.exit();
         System.exit(0);
+    }
+
+    public void setPlayerCharacter(String name)
+    {
+        mazeDisplayer.playerCharacter.set(name);
+        mazeDisplayer.loadCharacters();
+    }
+
+    public void setTerrainType(String name)
+    {
+        mazeDisplayer.setTerrainType(name);
+        mazeDisplayer.loadRoadTileImages();
+        mazeDisplayer.loadRoadTileImages();
     }
 }

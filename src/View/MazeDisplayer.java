@@ -1,6 +1,7 @@
 package View;
 
 import algorithms.mazeGenerators.Maze;
+import algorithms.search.MazeState;
 import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,11 +28,12 @@ import javafx.scene.media.MediaPlayer;
 public class MazeDisplayer extends Canvas
 {
     private Maze maze;
-    private Solution solution;
+    public Solution solution;
 
     // player position:
     private int playerRow;
     private int playerCol;
+    public boolean solutionIsShowing;
     private String facingDirection;
 
 
@@ -49,27 +51,44 @@ public class MazeDisplayer extends Canvas
     // goal position image
     StringProperty imageFileNameGoalPosition = new SimpleStringProperty();
 
+    // solution path image
+    StringProperty imageFileNamePathSolution = new SimpleStringProperty();
+
     /* Getter and Setter */
     public int getPlayerRow() { return playerRow; }
+
     public int getPlayerCol() { return playerCol; }
+
     public String getImageFileNameWall() { return imageFileNameWall.get(); }
+
     public String getImageFileNamePlayer() { return imageFileNamePlayer.get(); }
+
     public String getImageFileNameGoalPosition() { return imageFileNameGoalPosition.get(); }
+
     public String getTerrainType() {return terrainType.get(); }
+
     public String getPlayerCharacter() {return playerCharacter.get();}
+
     public void setImageFileNameWall(String imageFileNameWall) { this.imageFileNameWall.set(imageFileNameWall); }
+
     public void setImageFileNamePlayer(String imageFileNamePlayer) { this.imageFileNamePlayer.set(imageFileNamePlayer); }
+
     public void setImageFileNameGoalPosition(String imageFileNameGoalPosition) { this.imageFileNameGoalPosition.set(imageFileNameGoalPosition); }
+
     public void setTerrainType(String terrainType) {this.terrainType.set(terrainType);}
+
     public void setPlayerCharacter(String characterName) {this.playerCharacter.set(characterName);}
 
-    double canvasHeight,canvasWidth,cellHeight,cellWidth;
+    double canvasHeight, canvasWidth, cellHeight, cellWidth;
 
-    public MazeDisplayer(){
+    public MazeDisplayer()
+    {
         widthProperty().addListener(e->draw());
         heightProperty().addListener(e->draw());
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0,0,canvasWidth,canvasHeight);
+        setTerrainType("grass");
+        setPlayerCharacter("Tom");
     }
 
     public void setPlayerPosition(int playerRow, int playerCol)
@@ -79,11 +98,33 @@ public class MazeDisplayer extends Canvas
         draw();
     }
 
-    public void setSolution(Solution solution)
+    public void drawSolution()
     {
-        this.solution = solution;
-        //TODO: change to other function
-        draw();
+        canvasHeight = getHeight();
+        canvasWidth = getWidth();
+        cellHeight = canvasHeight / (maze.getRowSize() + 2);
+        cellWidth = canvasWidth / (maze.getColSize() + 2);
+
+        Image trophy = null;
+        try
+        {
+            trophy = new Image(new FileInputStream("./resources/Character/Tom/footStep.png"));
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("There is no tile image");
+        }
+        GraphicsContext graphicsContext = getGraphicsContext2D();
+        int pathSize = solution.getSolutionPath().size();
+        for (int index = 1; index < pathSize-1; index++)
+        {
+            int rowIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getRowIndex();
+            int colIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getColumnIndex();
+
+            double x = (colIndex + 1) * cellWidth;
+            double y = (rowIndex + 1) * cellHeight;
+            graphicsContext.drawImage(trophy, x - cellWidth * 0.3, y - cellHeight * 0.7, cellWidth * 1.5, cellHeight * 1.5);
+        }
     }
 
     public void drawMaze(Maze maze)
@@ -112,6 +153,7 @@ public class MazeDisplayer extends Canvas
         drawMazeTiles(graphicsContext, rows, cols, cellHeight, cellWidth);
         drawMazePlayer(graphicsContext, cellHeight, cellWidth);
         drawMazeGoalPosition(graphicsContext, cellHeight, cellWidth);
+        if (solutionIsShowing) drawSolution();
     }
 
     private void drawMazeGoalPosition(GraphicsContext graphicsContext, double cellHeight, double cellWidth)
@@ -286,7 +328,7 @@ public class MazeDisplayer extends Canvas
     }
 
 
-    private Image[] loadRoadTileImages()
+    public Image[] loadRoadTileImages()
     {
         Image[] pathTiles = new Image[17];
         try
@@ -304,7 +346,7 @@ public class MazeDisplayer extends Canvas
         return pathTiles;
     }
 
-    private Image[] loadTileImages()
+    public Image[] loadTileImages()
     {
         Image[] tiles = new Image[11];
         try

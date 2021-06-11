@@ -384,6 +384,11 @@ public class MyViewController implements Initializable, Observer
         mazeDisplayer.loadCharacters();
     }
 
+    public String getPlayerCharacter()
+    {
+        return mazeDisplayer.playerCharacter.get();
+    }
+
     public void setTerrainType(String name)
     {
         mazeDisplayer.setTerrainType(name);

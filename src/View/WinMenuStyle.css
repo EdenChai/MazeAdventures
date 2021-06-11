@@ -17,15 +17,15 @@
     -fx-background-color: transparent;
 }
 
-#returnButton
+#returnToMenuButton
 {
     -fx-background-color: transparent;
 }
-#returnButton:hover
+#returnToMenuButton:hover
 {
     -fx-background-color: transparent;
 }
-#returnButton:pressed
+#returnToMenuButton:pressed
 {
     -fx-background-color: transparent;
 }

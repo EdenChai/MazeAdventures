@@ -16,10 +16,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
@@ -35,6 +37,7 @@ public class Main extends Application {
     public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader,warningMenuLoader, winMenuLoader;
     private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene,warningMenuScene, lastScene, winMenuScene;
     public static Stage optimalStage, warningStage, borderStage, currentStage;
+    private static MediaPlayer winLoopSoundPlayer;
     public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure,warningMenuStructure,winMenuStructure;
     public static MediaPlayer mainMenuPlayer;
 
@@ -176,7 +179,9 @@ public class Main extends Application {
 
     public static void returnToMainMenuFromWin()
     {
-       playButtonClickSound();
+        lastScene = mainMenuScene;
+        playButtonClickSound();
+       winLoopSoundPlayer.stop();
        currentStage.setScene(mainMenuScene);
     }
 
@@ -221,9 +226,22 @@ public class Main extends Application {
         borderStage.hide();
         optimalStage.show();
         currentStage.setScene(winMenuScene);
-        //playWinSoundInto();
-        //playWinSoundLoop();
+        playWinSoundLoop();
     }
+
+    private static void playWinSoundLoop()
+    {
+        File soundClip = new File("./resources/Sound/Win_Lose/BRPG_Victory_Music_Loop.wav");
+        Media winSoundClip = new Media(soundClip.toURI().toString());
+        winLoopSoundPlayer = new MediaPlayer(winSoundClip);
+        winLoopSoundPlayer = new MediaPlayer(winSoundClip);
+        winLoopSoundPlayer.setVolume(0.1);
+        winLoopSoundPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        winLoopSoundPlayer.setStartTime(Duration.seconds(0));
+        winLoopSoundPlayer.setStopTime(Duration.seconds(9));
+        winLoopSoundPlayer.play();
+    }
+
 
 
     public static void goToHelpMenu()

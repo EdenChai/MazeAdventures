@@ -309,7 +309,6 @@ public class OptionsMenuControl
             System.out.println("Character image not found");
         }
         Main.myViewController.mazeDisplayer.draw();
-
     }
 
     public void grassButtonClicked(ActionEvent actionEvent)

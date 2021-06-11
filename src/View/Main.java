@@ -31,12 +31,12 @@ public class Main extends Application {
     public static OptionsMenuControl optionsMenuControl;
     public static MyViewController myViewController;
     public static WarningMenuControl warningMenuControl;
-    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader,warningMenuLoader;
-    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene,warningMenuScene, lastScene;
+    public static WinMenuControl winMenuControl;
+    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader,warningMenuLoader, winMenuLoader;
+    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene,warningMenuScene, lastScene, winMenuScene;
     public static Stage optimalStage, warningStage, borderStage, currentStage;
-    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure,warningMenuStructure;
+    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure,warningMenuStructure,winMenuStructure;
     public static MediaPlayer mainMenuPlayer;
-
 
 
 
@@ -60,6 +60,7 @@ public class Main extends Application {
         optionsMenuLoader = new FXMLLoader(getClass().getResource("../View/OptionsMenuStructure.fxml"));
         gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MazeDisplayerStructure.fxml"));
         warningMenuLoader = new FXMLLoader(getClass().getResource("../View/WarningMenuStructure.fxml"));
+        winMenuLoader = new FXMLLoader(getClass().getResource("../View/WinMenuStructure.fxml"));
 
         //Load FXML
         mainMenuStructure = mainMenuLoader.load();
@@ -68,6 +69,7 @@ public class Main extends Application {
         optionsMenuStructure = optionsMenuLoader.load();
         gameMenuStructure = gameMenuLoader.load();
         warningMenuStructure = warningMenuLoader.load();
+        winMenuStructure = winMenuLoader.load();
 
         //Load controllers
         mainMenuControl = mainMenuLoader.getController();
@@ -76,6 +78,7 @@ public class Main extends Application {
         optionsMenuControl= optionsMenuLoader.getController();
         myViewController = gameMenuLoader.getController();
         warningMenuControl = warningMenuLoader.getController();
+        winMenuControl = winMenuLoader.getController();
 
 
         //Load scenes
@@ -85,6 +88,7 @@ public class Main extends Application {
         mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
         gameMenuScene = new Scene(gameMenuStructure,899,952);
         warningMenuScene = new Scene(warningMenuStructure,790,344);
+        winMenuScene = new Scene(winMenuStructure,899,952);
 
         //Set Sences background
         creditsMenuScene.setFill(Color.TRANSPARENT);
@@ -93,6 +97,7 @@ public class Main extends Application {
         mainMenuScene .setFill(Color.TRANSPARENT);
         gameMenuScene.setFill(Color.TRANSPARENT);
         warningMenuScene.setFill(Color.TRANSPARENT);
+        winMenuScene.setFill(Color.TRANSPARENT);
 
         //Load the game stage control
         FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
@@ -135,6 +140,7 @@ public class Main extends Application {
         helpMenuControl.setBackGround(currentStage);
         optionsMenuControl.setBackGround(currentStage);
         myViewController.setBackGround(borderStage);
+        winMenuControl.setBackGround(currentStage);
 
 
 
@@ -152,6 +158,7 @@ public class Main extends Application {
         helpMenuControl.configureButtons();
         myViewController.configureButtons();
         warningMenuControl.configureButtons();
+        winMenuControl.configureButtons();
     }
 
     public static void main(String[] args) {
@@ -167,10 +174,10 @@ public class Main extends Application {
         optimalStage.setScene(mainMenuScene);
     }
 
-    public static void returnToMainMenuFromWarning()
+    public static void returnToMainMenuFromWin()
     {
-        warningStage.hide();
-        optimalStage.show();
+       playButtonClickSound();
+       currentStage.setScene(mainMenuScene);
     }
 
     public static void returnToLastScene()
@@ -208,6 +215,16 @@ public class Main extends Application {
         playButtonClickSound();
         optimalStage.setScene(creditsMenuScene);
     }
+
+    public static void goToWinMenu()
+    {
+        borderStage.hide();
+        optimalStage.show();
+        currentStage.setScene(winMenuScene);
+        //playWinSoundInto();
+        //playWinSoundLoop();
+    }
+
 
     public static void goToHelpMenu()
     {

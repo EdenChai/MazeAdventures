@@ -280,6 +280,7 @@ public class MyViewController implements Initializable, Observer
     private void playerWinning()
     {
         System.out.println("player winning");
+        Main.goToWinMenu();
     }
 
     private void updateRowsAndCols()

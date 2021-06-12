@@ -9,8 +9,8 @@ A Licence does not allow the Purchaser to:
 (c) Allow the user of the Media Product to extract the Licensed Asset or Derivative Works and use them outside of the relevant Media Product.
 
 Credit goes to :
-Chief programmer - Eden
-Co-chief programmer - Asaf
+Chief programmer - Eden Hai
+Co-chief programmer - Asaf Shukroon
 UI and SFX Designer, and senior programmer - Arie Katz
 
 Maze generation algorithm "Randomized Prim's algorithm" - Vojtěch Jarník,Robert C. Prim, and Edsger W. Dijkstra "Prim's algorithm/Jarník's algorithm/Prim–Jarník algorithm/Prim–Dijkstra algorithm/DJP algorithm"

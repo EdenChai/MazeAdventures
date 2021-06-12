@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -109,7 +108,6 @@ public class OptionsMenuControl
             }
             bestToggleButton.setGraphic(new ImageView(image));
 
-
             image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnTom.png"));
             tomToggleButton.setGraphic(new ImageView(image));
 
@@ -122,11 +120,9 @@ public class OptionsMenuControl
             image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffSand.png"));
             sandToggleButton.setGraphic(new ImageView(image));
 
-
-
-        exitButtonStates = new ImageView[3];
-        returnButtonStates = new ImageView[3];
-        Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates,exitButton,returnButton);
+            exitButtonStates = new ImageView[3];
+            returnButtonStates = new ImageView[3];
+            Main.loadExitAndReturn(exitButtonStates, returnButtonStates, exitButton, returnButton);
         }
         catch (FileNotFoundException e)
         {
@@ -143,10 +139,10 @@ public class OptionsMenuControl
     }
 
     public void returnButtonClicked(ActionEvent actionEvent)
-        {
-            Main.playButtonClickSound();
-            Main.returnToLastScene();
-        }
+    {
+        Main.playButtonClickSound();
+        Main.returnToLastScene();
+    }
 
 
     public void exitButtonClicked(ActionEvent actionEvent)
@@ -190,9 +186,9 @@ public class OptionsMenuControl
             Main.viewModel.setGenerateMazeConfiguration("SimpleMazeGenerator");
         }
         catch (FileNotFoundException e)
-            {
-                System.out.println("Tile image not found");
-            }
+        {
+            System.out.println("Tile image not found");
+        }
     }
 
     public void myMazeButtonClicked(ActionEvent actionEvent)
@@ -277,13 +273,14 @@ public class OptionsMenuControl
     {
         Main.playButtonAcceptSound();
         Main.myViewController.setPlayerCharacter("Tom");
+        Main.winMenuControl.setBackGroundCharacter();
         try
         {
-        Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnTom.png"));
-        tomToggleButton.setGraphic(new ImageView(image));
+            Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOnTom.png"));
+            tomToggleButton.setGraphic(new ImageView(image));
 
-        image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffJerry.png"));
-        jerryToggleButton.setGraphic(new ImageView(image));
+            image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffJerry.png"));
+            jerryToggleButton.setGraphic(new ImageView(image));
         }
         catch (FileNotFoundException e)
         {
@@ -296,6 +293,7 @@ public class OptionsMenuControl
     {
         Main.playButtonAcceptSound();
         Main.myViewController.setPlayerCharacter("Jerry");
+        Main.winMenuControl.setBackGroundCharacter();
         try
         {
             Image image = new Image(new FileInputStream("./resources/UI/Buttons/Picker/PickerOffTom.png"));

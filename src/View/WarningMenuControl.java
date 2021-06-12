@@ -1,6 +1,5 @@
 package View;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -17,7 +16,7 @@ public class WarningMenuControl
         Button returnButton = new Button();
         exitButtonStates = new ImageView[3];
         ImageView[] returnButtonStates = new ImageView[3];
-        Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates, exitButton,returnButton);
+        Main.loadExitAndReturn(exitButtonStates,returnButtonStates, exitButton,returnButton);
     }
 
 

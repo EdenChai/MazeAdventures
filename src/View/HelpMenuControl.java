@@ -18,7 +18,7 @@ public class HelpMenuControl
     {
         exitButtonStates = new ImageView[3];
         returnButtonStates = new ImageView[3];
-        Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates, exitButton,returnButton);
+        Main.loadExitAndReturn(exitButtonStates, returnButtonStates, exitButton, returnButton);
     }
 
     public void setBackGround(Stage stage)

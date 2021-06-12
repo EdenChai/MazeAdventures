@@ -20,43 +20,53 @@ public class WinMenuControl
 
         public void configureButtons()
         {
-            loadButtonGrapic();
+            returnToMenuButtonStates = new ImageView[3];
+            String path1 = "./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuUnPressed.png";
+            String path2 = "./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuHover.png";
+            String path3 = "./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuPressed.png";
+            Main.loadButtonGraphics(path1, path2, path3, returnToMenuButtonStates, returnToMenuButton);
             exitButtonStates = new ImageView[3];
             ImageView[] returnButtonStates = new ImageView[3];
             Button returnButton = new Button();
-            Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates, exitButton, returnButton);
-            setButtonFunctions(returnToMenuButton,returnToMenuButtonStates);
+            Main.loadExitAndReturn(exitButtonStates, returnButtonStates, exitButton, returnButton);
         }
-
-    public void loadButtonGrapic()
-    {
-        returnToMenuButtonStates = new ImageView[3];
-        returnToMenuButtonStates[0] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuUnPressed.png");
-        returnToMenuButtonStates[1] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuHover.png");
-        returnToMenuButtonStates[2] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuPressed.png");
-    }
-
-    public ImageView loadImageView(String path)
-    {
-        try
-        {
-            return new ImageView(new Image(new FileInputStream(path)));
-        } catch (FileNotFoundException e)
-        {
-            System.out.println("Button load failed");
-        }
-        return null;
-    }
-
-
-    public void setButtonFunctions(Button button, ImageView[] imageView)
-    {
-        button.setGraphic(imageView[0]);
-        button.setOnMouseEntered(e -> {button.setGraphic(imageView[1]);
-            Main.playButtonHoverSound();});
-        button.setOnMouseExited(e -> button.setGraphic(imageView[0]));
-        button.setOnMousePressed(e -> button.setGraphic(imageView[2]));
-    }
+//            loadButtonGrapic();
+//            exitButtonStates = new ImageView[3];
+//            ImageView[] returnButtonStates = new ImageView[3];
+//            Button returnButton = new Button();
+//            Main.loadButtonGraphicsExitAndReturn(exitButtonStates,returnButtonStates, exitButton, returnButton);
+//            setButtonFunctions(returnToMenuButton,returnToMenuButtonStates);
+//        }
+//
+//    public void loadButtonGrapic()
+//    {
+//        returnToMenuButtonStates = new ImageView[3];
+//        returnToMenuButtonStates[0] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuUnPressed.png");
+//        returnToMenuButtonStates[1] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuHover.png");
+//        returnToMenuButtonStates[2] = loadImageView("./resources/UI/Buttons/BlueButtons/BlueButtonReturnToMenuPressed.png");
+//    }
+//
+//    public ImageView loadImageView(String path)
+//    {
+//        try
+//        {
+//            return new ImageView(new Image(new FileInputStream(path)));
+//        } catch (FileNotFoundException e)
+//        {
+//            System.out.println("Button load failed");
+//        }
+//        return null;
+//    }
+//
+//
+//    public void setButtonFunctions(Button button, ImageView[] imageView)
+//    {
+//        button.setGraphic(imageView[0]);
+//        button.setOnMouseEntered(e -> {button.setGraphic(imageView[1]);
+//            Main.playButtonHoverSound();});
+//        button.setOnMouseExited(e -> button.setGraphic(imageView[0]));
+//        button.setOnMousePressed(e -> button.setGraphic(imageView[2]));
+//    }
 
     public void setBackGroundCharacter()
     {

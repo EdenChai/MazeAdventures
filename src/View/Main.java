@@ -21,9 +21,10 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
-public class Main extends Application {
+public class Main extends Application
+{
 
     public static MyModel model;
     public static MyViewModel viewModel;
@@ -34,13 +35,12 @@ public class Main extends Application {
     public static MyViewController myViewController;
     public static WarningMenuControl warningMenuControl;
     public static WinMenuControl winMenuControl;
-    public static FXMLLoader mainMenuLoader,creditsMenuLoader,helpMenuLoader,optionsMenuLoader,gameMenuLoader,warningMenuLoader, winMenuLoader;
-    private static Scene mainMenuScene,helpMenuScene,creditsMenuScene,optionsMenuScene,gameMenuScene,warningMenuScene, lastScene, winMenuScene;
+    public static FXMLLoader mainMenuLoader, creditsMenuLoader, helpMenuLoader, optionsMenuLoader, gameMenuLoader, warningMenuLoader, winMenuLoader;
+    private static Scene mainMenuScene, helpMenuScene, creditsMenuScene, optionsMenuScene, gameMenuScene, warningMenuScene, lastScene, winMenuScene;
     public static Stage optimalStage, warningStage, borderStage, currentStage;
     private static MediaPlayer winLoopSoundPlayer;
-    public Parent mainMenuStructure,creditsMenuStructure,helpMenuStructure,optionsMenuStructure,gameMenuStructure,warningMenuStructure,winMenuStructure;
+    public Parent mainMenuStructure, creditsMenuStructure, helpMenuStructure, optionsMenuStructure, gameMenuStructure, warningMenuStructure, winMenuStructure;
     public static MediaPlayer mainMenuPlayer;
-
 
 
     @Override
@@ -55,20 +55,19 @@ public class Main extends Application {
         borderStage.initStyle(StageStyle.DECORATED);
         currentStage = optimalStage;
 
-
         //Load loaders
         mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
         creditsMenuLoader = new FXMLLoader(getClass().getResource("../View/CreditsMenuStructure.fxml"));
         helpMenuLoader = new FXMLLoader(getClass().getResource("../View/HelpMenuStructure.fxml"));
         optionsMenuLoader = new FXMLLoader(getClass().getResource("../View/OptionsMenuStructure.fxml"));
-        gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MazeDisplayerStructure.fxml"));
+        gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MyView.fxml"));
         warningMenuLoader = new FXMLLoader(getClass().getResource("../View/WarningMenuStructure.fxml"));
         winMenuLoader = new FXMLLoader(getClass().getResource("../View/WinMenuStructure.fxml"));
 
         //Load FXML
         mainMenuStructure = mainMenuLoader.load();
-        creditsMenuStructure = creditsMenuLoader .load();
-        helpMenuStructure =helpMenuLoader.load();
+        creditsMenuStructure = creditsMenuLoader.load();
+        helpMenuStructure = helpMenuLoader.load();
         optionsMenuStructure = optionsMenuLoader.load();
         gameMenuStructure = gameMenuLoader.load();
         warningMenuStructure = warningMenuLoader.load();
@@ -76,37 +75,30 @@ public class Main extends Application {
 
         //Load controllers
         mainMenuControl = mainMenuLoader.getController();
-        creditsMenuControl= creditsMenuLoader.getController();
-        helpMenuControl= helpMenuLoader.getController();
-        optionsMenuControl= optionsMenuLoader.getController();
+        creditsMenuControl = creditsMenuLoader.getController();
+        helpMenuControl = helpMenuLoader.getController();
+        optionsMenuControl = optionsMenuLoader.getController();
         myViewController = gameMenuLoader.getController();
         warningMenuControl = warningMenuLoader.getController();
         winMenuControl = winMenuLoader.getController();
 
-
         //Load scenes
-        creditsMenuScene = new Scene(creditsMenuStructure,899,952);
-        helpMenuScene = new Scene(helpMenuStructure,899,952);
-        optionsMenuScene = new Scene(optionsMenuStructure,899,952);
-        mainMenuScene = new Scene(mainMenuLoader.getRoot(),899,952);
-        gameMenuScene = new Scene(gameMenuStructure,899,952);
-        warningMenuScene = new Scene(warningMenuStructure,790,344);
-        winMenuScene = new Scene(winMenuStructure,899,952);
+        creditsMenuScene = new Scene(creditsMenuStructure, 899, 952);
+        helpMenuScene = new Scene(helpMenuStructure, 899, 952);
+        optionsMenuScene = new Scene(optionsMenuStructure, 899, 952);
+        mainMenuScene = new Scene(mainMenuLoader.getRoot(), 899, 952);
+        gameMenuScene = new Scene(gameMenuStructure, 899, 952);
+        warningMenuScene = new Scene(warningMenuStructure, 790, 344);
+        winMenuScene = new Scene(winMenuStructure, 899, 952);
 
-        //Set Sences background
+        //Set Scenes background
         creditsMenuScene.setFill(Color.TRANSPARENT);
-        helpMenuScene .setFill(Color.TRANSPARENT);
+        helpMenuScene.setFill(Color.TRANSPARENT);
         optionsMenuScene.setFill(Color.TRANSPARENT);
-        mainMenuScene .setFill(Color.TRANSPARENT);
+        mainMenuScene.setFill(Color.TRANSPARENT);
         gameMenuScene.setFill(Color.TRANSPARENT);
         warningMenuScene.setFill(Color.TRANSPARENT);
         winMenuScene.setFill(Color.TRANSPARENT);
-
-        //Load the game stage control
-        FXMLLoader mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
-        mainMenuLoader.load();
-
-
 
         //Load the models
         model = new MyModel();
@@ -124,10 +116,9 @@ public class Main extends Application {
         configureControllers();
 
         //Load the main menu
-        lastScene =mainMenuScene;
+        lastScene = mainMenuScene;
         optimalStage.setScene(mainMenuScene);
         borderStage.setScene(gameMenuScene);
-
 
         //Load the warning menu
         warningStage = new Stage();
@@ -145,12 +136,9 @@ public class Main extends Application {
         myViewController.setBackGround(borderStage);
         winMenuControl.setBackGround(currentStage);
 
-
-
         optimalStage.setResizable(false);
         borderStage.setResizable(true);
         optimalStage.show();
-
     }
 
     public static void configureControllers()
@@ -164,7 +152,20 @@ public class Main extends Application {
         winMenuControl.configureButtons();
     }
 
-    public static void main(String[] args) {
+    public static void setButtonFunctions(Button button, ImageView[] imageView)
+    {
+        button.setGraphic(imageView[0]);
+        button.setOnMouseEntered(e ->
+        {
+            button.setGraphic(imageView[1]);
+            Main.playButtonHoverSound();
+        });
+        button.setOnMouseExited(e -> button.setGraphic(imageView[0]));
+        button.setOnMousePressed(e -> button.setGraphic(imageView[2]));
+    }
+
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
@@ -181,8 +182,8 @@ public class Main extends Application {
     {
         lastScene = mainMenuScene;
         playButtonClickSound();
-       winLoopSoundPlayer.stop();
-       currentStage.setScene(mainMenuScene);
+        winLoopSoundPlayer.stop();
+        currentStage.setScene(mainMenuScene);
     }
 
     public static void returnToLastScene()
@@ -243,7 +244,6 @@ public class Main extends Application {
     }
 
 
-
     public static void goToHelpMenu()
     {
         borderStage.hide();
@@ -267,13 +267,29 @@ public class Main extends Application {
 
     public static void goToGameMenu()
     {
+//        FXMLLoader gameMenuLoader = new FXMLLoader(Main.class.getResource("MyView.fxml"));
+//        Parent gameMenuStructure = null;
+//        try
+//        {
+//            gameMenuStructure = gameMenuLoader.load();
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        MyViewController myViewController = gameMenuLoader.getController();
+//        Scene gameMenuScene = new Scene(gameMenuStructure, 899, 952);
+//        borderStage.setScene(gameMenuScene);
+//        myViewController.setBackGround(borderStage);
+//        myViewController.configureButtons();
         lastScene = gameMenuScene;
         optimalStage.hide();
         borderStage.show();
-        myViewController.configure(viewModel,gameMenuScene,borderStage);
+        myViewController.configure(viewModel, gameMenuScene, borderStage);
         viewModel.addObserver(myViewController);
         playButtonClickSound();
         borderStage.setScene(gameMenuScene);
+        myViewController.setResizeEvent(gameMenuScene);
     }
 
     public static void playButtonHoverSound()
@@ -312,34 +328,88 @@ public class Main extends Application {
         movementSoundPlayer.play();
     }
 
-    public static void loadButtonGraphicsExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
+    public static void loadButtonGraphics(String path1, String path2, String path3, ImageView[] buttonStates, Button button, double num1, double num2, boolean bool1, boolean bool2)
     {
         try
         {
-            exitButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png"),100,100,false,false));
-            exitButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png"),100,100,false,false));
-            exitButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png"),100,100,false,false));
-            returnButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png"),100,100,false,false));
-            returnButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png"),100,100,false,false));
-            returnButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png"),100,100,false,false));
+            buttonStates[0] = new ImageView(new Image(new FileInputStream(path1), num1, num2, bool1, bool2));
+            buttonStates[1] = new ImageView(new Image(new FileInputStream(path2), num1, num2, bool1, bool2));
+            buttonStates[2] = new ImageView(new Image(new FileInputStream(path3), num1, num2, bool1, bool2));
         }
         catch (FileNotFoundException e)
         {
             System.out.println("Button load failed");
             e.printStackTrace();
         }
-
-        exitButton.setGraphic(exitButtonStates[0]);
-        exitButton.setOnMouseEntered(e -> {exitButton.setGraphic(exitButtonStates[1]);
-            Main.playButtonHoverSound();});
-        exitButton.setOnMouseExited(e -> exitButton.setGraphic(exitButtonStates[0]));
-        exitButton.setOnMousePressed(e -> exitButton.setGraphic(exitButtonStates[2]));
-        returnButton.setGraphic(returnButtonStates[0]);
-        returnButton.setOnMouseEntered(e -> {returnButton.setGraphic(returnButtonStates[1]);
-            Main.playButtonHoverSound();});
-        returnButton.setOnMouseExited(e -> returnButton.setGraphic(returnButtonStates[0]));
-        returnButton.setOnMousePressed(e -> returnButton.setGraphic(returnButtonStates[2]));
+        setButtonFunctions(button, buttonStates);
     }
+
+    public static void loadExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
+    {
+//        exitButtonStates = new ImageView[3];
+//        returnButtonStates = new ImageView[3];
+        String path1 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png";
+        String path2 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png";
+        String path3 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png";
+        Main.loadButtonGraphics(path1, path2, path3, exitButtonStates, exitButton, 100, 100, false, false);
+        path1 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png";
+        path2 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png";
+        path3 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png";
+        Main.loadButtonGraphics(path1, path2, path3, returnButtonStates, returnButton, 100, 100, false, false);
+    }
+
+    public static void loadHelpAndOptions(ImageView[] helpButtonStates, ImageView[] optionsButtonStates, Button helpButton, Button optionsButton)
+    {
+        String path1 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonUnPressed.png";
+        String path2 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonHover.png";
+        String path3 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonPressed.png";
+        Main.loadButtonGraphics(path1, path2, path3, optionsButtonStates, optionsButton, 100, 100, false, false);
+
+        path1 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonUnPressed.png";
+        path2 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonHover.png";
+        path3 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenHelpButtonPressed.png";
+        Main.loadButtonGraphics(path1, path2, path3, helpButtonStates, helpButton, 100, 100, false, false);
+    }
+
+    public static void loadButtonGraphics(String path1, String path2, String path3, ImageView[] buttonStates, Button button)
+    {
+        loadButtonGraphics(path1, path2, path3, buttonStates, button, 0, 0, false, false);
+    }
+
+//    public static void loadButtonGraphicsExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
+//    {
+//        try
+//        {
+//            exitButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png"), 100, 100, false, false));
+//            exitButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png"), 100, 100, false, false));
+//            exitButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png"), 100, 100, false, false));
+//            returnButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png"), 100, 100, false, false));
+//            returnButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png"), 100, 100, false, false));
+//            returnButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png"), 100, 100, false, false));
+//        }
+//        catch (FileNotFoundException e)
+//        {
+//            System.out.println("Button load failed");
+//            e.printStackTrace();
+//        }
+//
+//        exitButton.setGraphic(exitButtonStates[0]);
+//        exitButton.setOnMouseEntered(e ->
+//        {
+//            exitButton.setGraphic(exitButtonStates[1]);
+//            Main.playButtonHoverSound();
+//        });
+//        exitButton.setOnMouseExited(e -> exitButton.setGraphic(exitButtonStates[0]));
+//        exitButton.setOnMousePressed(e -> exitButton.setGraphic(exitButtonStates[2]));
+//        returnButton.setGraphic(returnButtonStates[0]);
+//        returnButton.setOnMouseEntered(e ->
+//        {
+//            returnButton.setGraphic(returnButtonStates[1]);
+//            Main.playButtonHoverSound();
+//        });
+//        returnButton.setOnMouseExited(e -> returnButton.setGraphic(returnButtonStates[0]));
+//        returnButton.setOnMousePressed(e -> returnButton.setGraphic(returnButtonStates[2]));
+//    }
 
     @Override
     public void stop() throws Exception
@@ -364,10 +434,6 @@ public class Main extends Application {
                 myViewController.mazeGenerated();
             }
         }
-        catch (Exception e)
-        {
-
-        }
-
+        catch (Exception ignored) { }
     }
 }

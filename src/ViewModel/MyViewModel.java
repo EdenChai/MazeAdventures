@@ -4,46 +4,49 @@ import Model.IModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MyViewModel extends Observable implements Observer {
+public class MyViewModel extends Observable implements Observer
+{
     public IModel model;
 
-    public MyViewModel(IModel model) {
+    public MyViewModel(IModel model)
+    {
         this.model = model;
-        this.model.assignObserver(this); //Observe the MyModel for it's changes
+        this.model.assignObserver(this); // Observe the MyModel for it's changes
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable o, Object arg)
+    {
         setChanged();
         notifyObservers(arg);
     }
 
-    public Maze getMaze(){
+    public Maze getMaze()
+    {
         return model.getMaze();
     }
 
-    public int getPlayerRow(){
+    public int getPlayerRow()
+    {
         return model.getCharacterRow();
     }
 
-    public int getPlayerCol(){
+    public int getPlayerCol()
+    {
         return model.getCharacterCol();
     }
 
-    public Solution getSolution(){
+    public Solution getSolution()
+    {
         return model.getSolution();
     }
 
-    public void generateMaze(int rows, int cols){
+    public void generateMaze(int rows, int cols)
+    {
         model.generateMaze(rows, cols);
     }
 
@@ -52,7 +55,8 @@ public class MyViewModel extends Observable implements Observer {
         model.updatePlayerLocation(keyCode);
     }
 
-    public void solveMaze(){
+    public void solveMaze()
+    {
         model.solveMaze();
     }
 
@@ -60,7 +64,9 @@ public class MyViewModel extends Observable implements Observer {
     {
         model.saveMaze(saveFile);
     }
-    public void loadGame(File file) throws IOException, ClassNotFoundException {
+
+    public void loadGame(File file)
+    {
         model.loadMaze(file);
     }
 

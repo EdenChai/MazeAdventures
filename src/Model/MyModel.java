@@ -35,37 +35,82 @@ public class MyModel extends Observable implements IModel
     private Solution solution;
     private int characterRow;
     private int characterCol;
-    private boolean isSolved;
+    private int goalRowPosition;
+    private int goalColPosition;
     public Configurations configurations;
 
     private ExecutorService threadPool = Executors.newCachedThreadPool();
 
-
+    /**
+     * Constructor
+     */
     public MyModel()
     {
-        configurations = Configurations.initialize();
-
-        // Initializing servers
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
+        configurations = Configurations.initialize();
         mazeGeneratingServer.start();
         solveSearchProblemServer.start();
-        isSolved = true;
-
     }
 
-    /**
-     * calls Server.stop() for both servers
-     */
-    public void stopServers()
+    /*************** Getter and Setter ***************/
+
+    @Override
+    public void assignObserver(Observer o)
     {
-        if (isSolved)
-        {
-            mazeGeneratingServer.stop();
-            solveSearchProblemServer.stop();
-        }
+        this.addObserver(o);
     }
-    private void generateMazeWithServer(int rows, int cols)
+
+    @Override
+    public Maze getMaze()
+    {
+        return maze;
+    }
+
+    @Override
+    public int getCharacterRow()
+    {
+        return characterRow;
+    }
+
+    @Override
+    public int getCharacterCol()
+    {
+        return characterCol;
+    }
+
+    @Override
+    public Solution getSolution()
+    {
+        return solution;
+    }
+
+    @Override
+    public String getMazeGeneratingAlgorithm()
+    {
+        return configurations.getConfiguration("mazeGeneratingAlgorithm");
+    }
+
+    @Override
+    public String getMazeSearchingAlgorithm()
+    {
+        return configurations.getConfiguration("mazeSearchingAlgorithm");
+    }
+
+    @Override
+    public void setMazeGeneratingAlgorithm(String generatingAlgorithm)
+    {
+        configurations.setConfiguration("mazeGeneratingAlgorithm", generatingAlgorithm);
+    }
+
+    @Override
+    public void setMazeSearchingAlgorithm(String searchingAlgorithm)
+    {
+        configurations.setConfiguration("mazeSearchingAlgorithm", searchingAlgorithm);
+    }
+
+    @Override
+    public void generateMaze(int rows, int cols)
     {
         try
         {
@@ -110,34 +155,25 @@ public class MyModel extends Observable implements IModel
                 }
             });
             client.communicateWithServer();
+
+            this.goalRowPosition = maze.getGoalPosition().getRowIndex();
+            this.goalColPosition = maze.getGoalPosition().getColumnIndex();
+
+            setChanged();
+            notifyObservers("maze generated");
+
+            /* Initialize the start position of character */
+            this.characterRow = maze.getStartPosition().getRowIndex();
+            this.characterCol = maze.getStartPosition().getColumnIndex();
+
+            setChanged();
+            notifyObservers("player moved");
         }
 
         catch (UnknownHostException e)
         {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void generateMaze(int rows, int cols)
-    {
-        /* Generate new maze through server */
-        generateMazeWithServer(rows, cols);
-        setChanged();
-        notifyObservers("maze generated");
-
-        /* Initialize the start position of character */
-        this.characterRow = maze.getStartPosition().getRowIndex();
-        this.characterCol = maze.getStartPosition().getColumnIndex();
-
-        setChanged();
-        notifyObservers("player moved");
-    }
-
-    @Override
-    public Maze getMaze()
-    {
-        return maze;
     }
 
     @Override
@@ -165,18 +201,17 @@ public class MyModel extends Observable implements IModel
             case NUMPAD4:
                 setChanged();
                 notifyObservers("player looked to the left");
-                if (isMoveValid(characterRow, characterCol-1))
+                if (isMoveValid(characterRow, characterCol - 1))
                 {
                     characterCol--;
                 }
                 break;
 
-
             case RIGHT:
             case NUMPAD6:
                 setChanged();
                 notifyObservers("player looked to the right");
-                if (isMoveValid(characterRow, characterCol+1))
+                if (isMoveValid(characterRow, characterCol + 1))
                 {
                     characterCol++;
                 }
@@ -188,7 +223,7 @@ public class MyModel extends Observable implements IModel
             case NUMPAD7:
                 setChanged();
                 notifyObservers("player looked to the left");
-                if (isMoveValid(characterRow-1, characterCol-1) && (isMoveValid(characterRow, characterCol-1) || isMoveValid(characterRow-1, characterCol)))
+                if (isMoveValid(characterRow - 1, characterCol - 1) && (isMoveValid(characterRow, characterCol - 1) || isMoveValid(characterRow - 1, characterCol)))
                 {
                     characterRow--;
                     characterCol--;
@@ -199,7 +234,7 @@ public class MyModel extends Observable implements IModel
             case NUMPAD1:
                 setChanged();
                 notifyObservers("player looked to the left");
-                if (isMoveValid(characterRow+1, characterCol-1) && (isMoveValid(characterRow, characterCol-1) || isMoveValid(characterRow+1, characterCol)))
+                if (isMoveValid(characterRow + 1, characterCol - 1) && (isMoveValid(characterRow, characterCol - 1) || isMoveValid(characterRow + 1, characterCol)))
                 {
                     characterRow++;
                     characterCol--;
@@ -210,7 +245,7 @@ public class MyModel extends Observable implements IModel
             case NUMPAD9:
                 setChanged();
                 notifyObservers("player looked to the right");
-                if (isMoveValid(characterRow-1, characterCol+1) && (isMoveValid(characterRow-1, characterCol) || isMoveValid(characterRow, characterCol+1)))
+                if (isMoveValid(characterRow - 1, characterCol + 1) && (isMoveValid(characterRow - 1, characterCol) || isMoveValid(characterRow, characterCol + 1)))
                 {
                     characterRow--;
                     characterCol++;
@@ -221,7 +256,7 @@ public class MyModel extends Observable implements IModel
             case NUMPAD3:
                 setChanged();
                 notifyObservers("player looked to the right");
-                if (isMoveValid(characterRow+1, characterCol+1) && (isMoveValid(characterRow+1, characterCol) || isMoveValid(characterRow, characterCol+1)))
+                if (isMoveValid(characterRow + 1, characterCol + 1) && (isMoveValid(characterRow + 1, characterCol) || isMoveValid(characterRow, characterCol + 1)))
                 {
                     characterRow++;
                     characterCol++;
@@ -230,48 +265,21 @@ public class MyModel extends Observable implements IModel
             default:
                 return;
         }
-        if(getCharacterRow() == maze.getGoalPosition().getRowIndex() && getCharacterRow() == maze.getGoalPosition().getColumnIndex())
+
+        maze.setStartPosition(new Position(getCharacterRow(), getCharacterCol()));
+        solveMaze();
+        setChanged();
+        notifyObservers("player moved");
+
+        if (characterRow == goalRowPosition && characterCol == goalColPosition)
         {
             setChanged();
             notifyObservers("player winning");
         }
-        else
-        {
-            maze.setStartPosition(new Position(getCharacterRow(), getCharacterCol()));
-            solveMaze();
-            setChanged();
-            notifyObservers("player moved");
-        }
-    }
-
-
-    @Override
-    public int getCharacterRow()
-    {
-        return characterRow;
-    }
-
-    @Override
-    public int getCharacterCol()
-    {
-        return characterCol;
-    }
-
-    @Override
-    public void assignObserver(Observer o)
-    {
-        this.addObserver(o);
     }
 
     @Override
     public void solveMaze()
-    {
-        solveMazeWithServer();
-        setChanged();
-        notifyObservers("maze solved");
-    }
-
-    private void solveMazeWithServer()
     {
         try
         {
@@ -295,14 +303,15 @@ public class MyModel extends Observable implements IModel
                         solution = (Solution) fromServer.readObject();
                     }
 
-                    catch (Exception e)
+                    catch (Exception ignored)
                     {
-                        e.printStackTrace();
                     }
                 }
             });
 
             client.communicateWithServer();
+            setChanged();
+            notifyObservers("maze solved");
         }
 
         catch (UnknownHostException e)
@@ -312,47 +321,99 @@ public class MyModel extends Observable implements IModel
     }
 
     @Override
-    public Solution getSolution()
+    public void saveMaze(File file)
     {
-        return solution;
-    }
+        File endFile = new File(file.getPath());
+        int[][] grid = maze.getMaze();
+        try
+        {
+            /* game state params --> save to file */
+            endFile.createNewFile();
+            StringBuilder builder = new StringBuilder();
+            builder.append(characterRow + "\n");
+            builder.append(characterCol + "\n");
+            builder.append(maze.getGoalPosition().getRowIndex() + "\n");
+            builder.append(maze.getGoalPosition().getColumnIndex() + "\n");
+            builder.append(grid.length + "\n");
+            builder.append(grid[0].length + "\n");
 
-    private boolean isMoveValid(int row, int col)
-    {
-        try { return maze.getMaze()[row][col] == 0; }
-        catch (Exception e) { return false; }
+            /* write maze grid to file */
+            for (int i = 0; i < grid.length; i++)
+            {
+                for (int j = 0; j < grid[0].length; j++)
+                {
+                    builder.append(grid[i][j] + "");
+                    if (j < grid[0].length - 1) builder.append(",");
+                }
+                builder.append("\n");
+            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
+            writer.write(builder.toString());
+            writer.close();
+        }
+        catch (IOException ignored) { }
     }
 
     @Override
-    public void setMazeGeneratingAlgorithm(String generatingAlgorithm)
+    public void loadMaze(File file)
     {
-        configurations.setConfiguration("mazeGeneratingAlgorithm", generatingAlgorithm);
+        int goalRowIdx = 0, goalColIdx = 0, playerRowIdx = 0, playerColIdx = 0, mazeNumOfRows = 0, mazeNumOfCols = 0;
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader(file));
 
+            /* read 6 lines from file -- the saved parameters of a maze game */
+            for (int i = 0; i < 6; i++)
+            {
+                String line = br.readLine();
+                if (line != null)
+                {
+                    if (i == 0) playerRowIdx = Integer.parseInt(line);
+                    if (i == 1) playerColIdx = Integer.parseInt(line);
+                    if (i == 2) goalRowIdx = Integer.parseInt(line);
+                    if (i == 3) goalColIdx = Integer.parseInt(line);
+                    if (i == 4) mazeNumOfRows = Integer.parseInt(line);
+                    if (i == 5) mazeNumOfCols = Integer.parseInt(line);
+                }
+            }
+            int[][] grid = new int[mazeNumOfRows][mazeNumOfCols];
+            String line;
+            int row = 0;
+            while ((line = br.readLine()) != null)
+            {
+                String[] cols = line.split(",");
+                int col = 0;
+                for (String c : cols)
+                {
+                    grid[row][col] = Integer.parseInt(c);
+                    col++;
+                }
+                row++;
+            }
+            br.close();
+            Position start = new Position(playerRowIdx, playerColIdx);
+            Position goal = new Position(goalRowIdx, goalColIdx);
+            this.maze = new Maze(mazeNumOfRows, mazeNumOfCols);
+            this.maze.setStartPosition(start);
+            this.maze.setGoalPosition(goal);
+            this.maze.setMaze(grid);
+            this.goalRowPosition = goalRowIdx;
+            this.goalColPosition = goalColIdx;
+            this.characterCol = playerColIdx;
+            this.characterRow = playerRowIdx;
+
+            setChanged();
+            notifyObservers("loaded");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-
     @Override
-    public String getMazeGeneratingAlgorithm()
+    public void shutDown()
     {
-        return configurations.getConfiguration("mazeGeneratingAlgorithm");
-    }
-
-    @Override
-    public void setMazeSearchingAlgorithm(String searchingAlgorithm)
-    {
-        configurations.setConfiguration("mazeSearchingAlgorithm", searchingAlgorithm);
-    }
-
-    @Override
-    public String getMazeSearchingAlgorithm()
-    {
-        return configurations.getConfiguration("mazeSearchingAlgorithm");
-    }
-
-
-
-    @Override
-    public void shutDown() {
         System.out.println("Close Model");
         mazeGeneratingServer.stop();
         if (solveSearchProblemServer != null)
@@ -362,94 +423,9 @@ public class MyModel extends Observable implements IModel
         threadPool.shutdown();
     }
 
-    @Override
-    public void saveMaze(File file)
+    private boolean isMoveValid(int row, int col)
     {
-        File endFile = new File(file.getPath());
-        int [][] grid = maze.getMaze();
-        try {
-            /*game state params --> save to file*/
-            endFile.createNewFile();
-            StringBuilder  builder = new StringBuilder();
-            builder.append(characterRow+"\n");
-            builder.append(characterCol+"\n");
-            builder.append(maze.getGoalPosition().getRowIndex()+"\n");
-            builder.append(maze.getGoalPosition().getColumnIndex()+"\n");
-            builder.append(grid.length+"\n");
-            builder.append(grid[0].length+"\n");
-            /*write maze grid to file */
-            for(int i = 0; i < grid.length; i++)
-            {
-                for(int j = 0; j < grid[0].length; j++)
-                {
-                    builder.append(grid[i][j]+"");
-                    if(j < grid[0].length - 1)
-                        builder.append(",");
-                }
-                builder.append("\n");
-            }
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getPath()));
-            writer.write(builder.toString());
-            writer.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        try { return maze.getMaze()[row][col] == 0; }
+        catch (Exception e) { return false; }
     }
-
-
-    @Override
-    public void loadMaze(File file)
-    {
-        int goalRowIdx = 0, goalColIdx = 0 , playerRowIdx = 0, playerColIdx= 0, mazeNumOfRows = 0, mazeNumOfCols = 0;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            /*read 6 lines from file -- the saved parameters of a maze game */
-            for( int i = 0 ; i < 6 ; i++){
-                String line = br.readLine();
-                if (line != null) {
-                    if(i == 0)
-                        playerRowIdx = Integer.parseInt(line);
-                    if(i == 1)
-                        playerColIdx = Integer.parseInt(line);
-                    if(i == 2)
-                        goalRowIdx = Integer.parseInt(line);
-                    if(i == 3)
-                        goalColIdx = Integer.parseInt(line);
-                    if(i == 4)
-                        mazeNumOfRows = Integer.parseInt(line);
-                    if(i == 5)
-                        mazeNumOfCols = Integer.parseInt(line);
-                }
-            }
-            int[][] grid = new int[mazeNumOfRows][mazeNumOfCols];
-            String line = "";
-            int row = 0;
-            while ((line = br.readLine()) != null) {
-                String[] cols = line.split(",");
-                int col = 0;
-                for (String c : cols) {
-                    grid[row][col] = Integer.parseInt(c);
-                    col++;
-                }
-                row++;
-            }
-            br.close();
-            Position start = new Position(playerRowIdx, playerColIdx);
-            Position goal  = new Position(goalRowIdx, goalColIdx);
-            this.maze = new Maze(mazeNumOfRows, mazeNumOfCols);
-            this.maze.setStartPosition(start);
-            this.maze.setGoalPosition(goal);
-            this.maze.setMaze(grid);
-            this.characterCol = playerColIdx;
-            this.characterRow = playerRowIdx;
-
-            setChanged();
-            notifyObservers("loaded");
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
-
-
 }

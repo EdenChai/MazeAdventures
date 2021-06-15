@@ -29,7 +29,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
-public class MyViewController implements Initializable, Observer
+public class MyViewController implements Observer
 {
     public MyViewModel myViewModel;
     public Scene gameMenuScene;
@@ -73,7 +73,7 @@ public class MyViewController implements Initializable, Observer
         helpButtonStates = new ImageView[3];
         solveButtonStates = new ImageView[3];
 
-//        Main.loadExitAndReturn(exitButtonStates, returnButtonStates, exitButt, returnToMainButt);
+        //        Main.loadExitAndReturn(exitButtonStates, returnButtonStates, exitButt, returnToMainButt);
         String path1 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png";
         String path2 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png";
         String path3 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png";
@@ -98,7 +98,7 @@ public class MyViewController implements Initializable, Observer
         path3 = "./resources/UI/Buttons/GreenButtons/GreenSaveGameButtonPressed.png";
         Main.loadButtonGraphics(path1, path2, path3, saveButtonState, saveButt, 200, 100, false, false);
 
-//        Main.loadHelpAndOptions(helpButtonStates, optionsButtonStates, helpButt, optionsButt);
+        //        Main.loadHelpAndOptions(helpButtonStates, optionsButtonStates, helpButt, optionsButt);
         path1 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonUnPressed.png";
         path2 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonHover.png";
         path3 = "./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenSettingsButtonPressed.png";
@@ -134,11 +134,6 @@ public class MyViewController implements Initializable, Observer
     }
 
     /*********************************************************/
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
-    }
 
     public String getUpdatePlayerRow()
     {
@@ -179,7 +174,7 @@ public class MyViewController implements Initializable, Observer
 
     public void showSolutionClicked(ActionEvent actionEvent)
     {
-        if (myViewModel.getMaze() == null)
+        if (myViewModel.getMaze() == null || !mazeDisplayer.online)
         {
             Main.playButtonExitSound();
             return;
@@ -200,8 +195,16 @@ public class MyViewController implements Initializable, Observer
 
     public void keyPressed(KeyEvent keyEvent)
     {
-        myViewModel.movePlayer(keyEvent.getCode());
-        keyEvent.consume();
+        if (mazeDisplayer.online)
+        {
+            myViewModel.movePlayer(keyEvent.getCode());
+            keyEvent.consume();
+        }
+    }
+
+    public void unDraw()
+    {
+        mazeDisplayer.unDraw();
     }
 
     public void setPlayerPosition(int row, int col)
@@ -272,6 +275,7 @@ public class MyViewController implements Initializable, Observer
 
     public void mazeGenerated()
     {
+        mazeDisplayer.online = true;
         mazeDisplayer.loadCharacters();
         mazeDisplayer.drawMaze(myViewModel.getMaze());
         mazeDisplayer.setGoalDirection();
@@ -303,7 +307,7 @@ public class MyViewController implements Initializable, Observer
 
     public void SaveMazeClicked(ActionEvent actionEvent)
     {
-        if (myViewModel.getMaze() == null)
+        if (myViewModel.getMaze() == null || !mazeDisplayer.online)
         {
             Main.playButtonExitSound();
             return;
@@ -368,11 +372,6 @@ public class MyViewController implements Initializable, Observer
         Main.goToCreditsMenu();
     }
 
-    public void newButtClicked(ActionEvent actionEvent)
-    {
-        mazeGenerated();
-    }
-
     public void setResizeEvent(Scene scene)
     {
         mazeDisplayer.widthProperty().bind(pane.widthProperty());
@@ -401,36 +400,9 @@ public class MyViewController implements Initializable, Observer
         }
     }
 
-//        /**
-//         * handler for onMouseDragged(dragging the player) inside the Maze
-//         */
-//        public void mouseDragged(MouseEvent mouseEvent)
-//        {
-//            if (myViewModel.getMaze() != null)
-//            {
-//                int maximumSize = Math.max(myViewModel.getMaze().getRowSize(), myViewModel.getMaze().getColSize());
-//                double mousePosX = helperMouseDragged(maximumSize, mazeDisplayer.getHeight(), myViewModel.getMaze().getRowSize(), mouseEvent.getX(), mazeDisplayer.getWidth() / maximumSize);
-//                double mousePosY = helperMouseDragged(maximumSize, mazeDisplayer.getWidth(), myViewModel.getMaze().getColSize(), mouseEvent.getY(), mazeDisplayer.getHeight() / maximumSize);
-//
-//                if (mousePosX == myViewModel.getPlayerCol() && mousePosY < myViewModel.getPlayerRow()) { myViewModel.movePlayer(KeyCode.NUMPAD8); }
-//                else if (mousePosY == myViewModel.getPlayerRow() && mousePosX > myViewModel.getPlayerCol()) { myViewModel.movePlayer(KeyCode.NUMPAD6); }
-//                else if (mousePosY == myViewModel.getPlayerRow() && mousePosX < myViewModel.getPlayerCol()) { myViewModel.movePlayer(KeyCode.NUMPAD4); }
-//                else if (mousePosX == myViewModel.getPlayerCol() && mousePosY > myViewModel.getPlayerRow()) myViewModel.movePlayer(KeyCode.NUMPAD2);
-//            }
-//        }
-//
-//        private double helperMouseDragged(int maxsize, double canvasSize, int mazeSize, double mouseEvent, double temp)
-//        {
-//            double cellSize = canvasSize / maxsize;
-//            double start = (canvasSize / 2 - (cellSize * mazeSize / 2)) / cellSize;
-//            int mouse = (int) ((mouseEvent) / (temp) - start);
-//            return mouse;
-//        }
-
     public void mouseDragged(MouseEvent mouseEvent)
     {
-
-        if (mazeDisplayer != null)
+        if (mazeDisplayer != null && mazeDisplayer.online)
         {
             int maxSize = Math.max(myViewModel.getMaze().getColSize(), myViewModel.getMaze().getRowSize());
             double cellHeight = mazeDisplayer.getHeight() / (maxSize + 2);
@@ -441,14 +413,9 @@ public class MyViewController implements Initializable, Observer
             int colMazeSize = myViewModel.getMaze().getColSize();
             double startRow = (canvasHeight / 2 - (cellHeight * rowMazeSize / 2)) / cellHeight;
             double startCol = (canvasWidth / 2 - (cellWidth * colMazeSize / 2)) / cellWidth;
-            //            double mouseX = 1 + (int) ((mouseEvent.getX() + startRow ) / (mazeDisplayer.getWidth()  / maxSize));
-            //            double mouseY = 1 + (int) ((mouseEvent.getY() + startCol ) / (mazeDisplayer.getHeight() / maxSize));
             double mouseX = (int) ((mouseEvent.getX()) / cellWidth - startCol);
             double mouseY = (int) ((mouseEvent.getY()) / cellHeight - startRow);
-            System.out.println("MouseX = " + mouseX);
-            System.out.println("MouseY = " + mouseY + "\n");
-            //            if (!(myViewModel.getPlayerRow() == )
-            //            {
+
             if (mouseY < myViewModel.getPlayerRow() && mouseX == myViewModel.getPlayerCol()) myViewModel.movePlayer(KeyCode.UP);
 
             if (mouseY > myViewModel.getPlayerRow() && mouseX == myViewModel.getPlayerCol()) myViewModel.movePlayer(KeyCode.DOWN);
@@ -456,7 +423,6 @@ public class MyViewController implements Initializable, Observer
             if (mouseX < myViewModel.getPlayerCol() && mouseY == myViewModel.getPlayerRow()) myViewModel.movePlayer(KeyCode.LEFT);
 
             if (mouseX > myViewModel.getPlayerCol() && mouseY == myViewModel.getPlayerRow()) myViewModel.movePlayer(KeyCode.RIGHT);
-            //            }
         }
     }
 }

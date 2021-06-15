@@ -290,6 +290,8 @@ public class Main extends Application
         playButtonClickSound();
         borderStage.setScene(gameMenuScene);
         myViewController.setResizeEvent(gameMenuScene);
+        myViewController.mazeDisplayer.online = false;
+        myViewController.unDraw();
     }
 
     public static void playButtonHoverSound()

@@ -95,40 +95,43 @@ public class MazeDisplayer extends Canvas
 
     public void setPlayerPosition(int playerRow, int playerCol)
     {
-//        if (online)
-//        {
+        if (online)
+        {
             this.playerRow = playerRow;
             this.playerCol = playerCol;
             draw();
-//        }
+        }
     }
 
     public void drawSolution()
     {
-        canvasHeight = getHeight();
-        canvasWidth = getWidth();
-        cellHeight = canvasHeight / (maze.getRowSize() + 2);
-        cellWidth = canvasWidth / (maze.getColSize() + 2);
+        if (online)
+        {
+            canvasHeight = getHeight();
+            canvasWidth = getWidth();
+            cellHeight = canvasHeight / (maze.getRowSize() + 2);
+            cellWidth = canvasWidth / (maze.getColSize() + 2);
 
-        Image trophy = null;
-        try
-        {
-            trophy = new Image(new FileInputStream("./resources/Character/Tom/footStep.png"));
-        }
-        catch (FileNotFoundException e)
-        {
-            System.out.println("There is no tile image");
-        }
-        GraphicsContext graphicsContext = getGraphicsContext2D();
-        int pathSize = solution.getSolutionPath().size();
-        for (int index = 1; index < pathSize - 1; index++)
-        {
-            int rowIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getRowIndex();
-            int colIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getColumnIndex();
+            Image trophy = null;
+            try
+            {
+                trophy = new Image(new FileInputStream("./resources/Character/Tom/footStep.png"));
+            }
+            catch (FileNotFoundException e)
+            {
+                System.out.println("There is no tile image");
+            }
+            GraphicsContext graphicsContext = getGraphicsContext2D();
+            int pathSize = solution.getSolutionPath().size();
+            for (int index = 1; index < pathSize - 1; index++)
+            {
+                int rowIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getRowIndex();
+                int colIndex = ((MazeState) solution.getSolutionPath().get(index)).getPosition().getColumnIndex();
 
-            double x = (colIndex + 1) * cellWidth;
-            double y = (rowIndex + 1) * cellHeight;
-            graphicsContext.drawImage(trophy, x - cellWidth * 0.3, y - cellHeight * 0.7, cellWidth * 1.5, cellHeight * 1.5);
+                double x = (colIndex + 1) * cellWidth;
+                double y = (rowIndex + 1) * cellHeight;
+                graphicsContext.drawImage(trophy, x - cellWidth * 0.3, y - cellHeight * 0.7, cellWidth * 1.5, cellHeight * 1.5);
+            }
         }
     }
 
@@ -140,25 +143,28 @@ public class MazeDisplayer extends Canvas
 
     public void draw()
     {
-        if (maze == null) return;
+        if (online)
+        {
+            if (maze == null) return;
 
-        canvasHeight = getHeight();
-        canvasWidth = getWidth();
-        int rows = maze.getRowSize();
-        int cols = maze.getColSize();
+            canvasHeight = getHeight();
+            canvasWidth = getWidth();
+            int rows = maze.getRowSize();
+            int cols = maze.getColSize();
 
-        cellHeight = canvasHeight / (rows + 2);
-        cellWidth = canvasWidth / (cols + 2);
+            cellHeight = canvasHeight / (rows + 2);
+            cellWidth = canvasWidth / (cols + 2);
 
-        GraphicsContext graphicsContext = getGraphicsContext2D();
+            GraphicsContext graphicsContext = getGraphicsContext2D();
 
-        // clear the canvas:
-        graphicsContext.clearRect(0, 0, canvasWidth, canvasHeight);
+            // clear the canvas:
+            graphicsContext.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        drawMazeTiles(graphicsContext, rows, cols, cellHeight, cellWidth);
-        drawMazePlayer(graphicsContext, cellHeight, cellWidth);
-        drawMazeGoalPosition(graphicsContext, cellHeight, cellWidth);
-        if (solutionIsShowing) drawSolution();
+            drawMazeTiles(graphicsContext, rows, cols, cellHeight, cellWidth);
+            drawMazePlayer(graphicsContext, cellHeight, cellWidth);
+            drawMazeGoalPosition(graphicsContext, cellHeight, cellWidth);
+            if (solutionIsShowing) drawSolution();
+        }
     }
 
     private void drawMazeGoalPosition(GraphicsContext graphicsContext, double cellHeight, double cellWidth)
@@ -439,5 +445,10 @@ public class MazeDisplayer extends Canvas
     {
         imageFileNamePlayer.set("./resources/Character/" + playerCharacter.get() + "/active_right.png");
         imageFileNameGoalPosition.set("./resources/Character/" + playerCharacter.get() + "/notActive_right.png");
+    }
+
+    public void unDraw()
+    {
+        getGraphicsContext2D().clearRect(0, 0, canvasWidth, canvasHeight);
     }
 }

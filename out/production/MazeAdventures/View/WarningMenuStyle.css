@@ -1,0 +1,16 @@
+.root
+{
+    -fx-background-color: transparent;
+}
+#returnButton
+{
+    -fx-background-color: transparent;
+}
+#returnButton:hover
+{
+    -fx-background-color: transparent;
+}
+#returnButton:pressed
+{
+    -fx-background-color: transparent;
+}

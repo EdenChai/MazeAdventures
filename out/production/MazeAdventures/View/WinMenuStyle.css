@@ -1,0 +1,31 @@
+.root
+{
+    -fx-background-color: transparent;
+}
+#exitButton
+{
+    -fx-background-color: transparent;
+}
+
+#exitButton:hover
+{
+    -fx-background-color: transparent;
+}
+
+#exitButton:pressed
+{
+    -fx-background-color: transparent;
+}
+
+#returnToMenuButton
+{
+    -fx-background-color: transparent;
+}
+#returnToMenuButton:hover
+{
+    -fx-background-color: transparent;
+}
+#returnToMenuButton:pressed
+{
+    -fx-background-color: transparent;
+}

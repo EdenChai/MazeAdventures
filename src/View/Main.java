@@ -22,10 +22,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application
 {
-
     public static MyModel model;
     public static MyViewModel viewModel;
     public static MainMenuControl mainMenuControl;
@@ -49,20 +49,20 @@ public class Main extends Application
         //Initialize the current stage
         optimalStage = primaryStage;
         borderStage = new Stage();
-        optimalStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
-        borderStage.getIcons().add(new Image(new FileInputStream("./resources/UI/UI/TomAndJerryIcon.png")));
+        optimalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("UI/UI/TomAndJerryIcon.png"))));
+        borderStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("UI/UI/TomAndJerryIcon.png"))));
         optimalStage.initStyle(StageStyle.TRANSPARENT);
         borderStage.initStyle(StageStyle.DECORATED);
         currentStage = optimalStage;
 
         //Load loaders
-        mainMenuLoader = new FXMLLoader(getClass().getResource("../View/MainMenuStructure.fxml"));
-        creditsMenuLoader = new FXMLLoader(getClass().getResource("../View/CreditsMenuStructure.fxml"));
-        helpMenuLoader = new FXMLLoader(getClass().getResource("../View/HelpMenuStructure.fxml"));
-        optionsMenuLoader = new FXMLLoader(getClass().getResource("../View/OptionsMenuStructure.fxml"));
-        gameMenuLoader = new FXMLLoader(getClass().getResource("../View/MyView.fxml"));
-        warningMenuLoader = new FXMLLoader(getClass().getResource("../View/WarningMenuStructure.fxml"));
-        winMenuLoader = new FXMLLoader(getClass().getResource("../View/WinMenuStructure.fxml"));
+        mainMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/MainMenuStructure.fxml"));
+        creditsMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/CreditsMenuStructure.fxml"));
+        helpMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/HelpMenuStructure.fxml"));
+        optionsMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/OptionsMenuStructure.fxml"));
+        gameMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/MyView.fxml"));
+        warningMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/WarningMenuStructure.fxml"));
+        winMenuLoader = new FXMLLoader(getClass().getClassLoader().getResource("View/WinMenuStructure.fxml"));
 
         //Load FXML
         mainMenuStructure = mainMenuLoader.load();
@@ -267,21 +267,6 @@ public class Main extends Application
 
     public static void goToGameMenu()
     {
-//        FXMLLoader gameMenuLoader = new FXMLLoader(Main.class.getResource("MyView.fxml"));
-//        Parent gameMenuStructure = null;
-//        try
-//        {
-//            gameMenuStructure = gameMenuLoader.load();
-//        }
-//        catch (IOException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        MyViewController myViewController = gameMenuLoader.getController();
-//        Scene gameMenuScene = new Scene(gameMenuStructure, 899, 952);
-//        borderStage.setScene(gameMenuScene);
-//        myViewController.setBackGround(borderStage);
-//        myViewController.configureButtons();
         lastScene = gameMenuScene;
         optimalStage.hide();
         borderStage.show();
@@ -348,8 +333,6 @@ public class Main extends Application
 
     public static void loadExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
     {
-//        exitButtonStates = new ImageView[3];
-//        returnButtonStates = new ImageView[3];
         String path1 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png";
         String path2 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png";
         String path3 = "./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png";
@@ -378,45 +361,9 @@ public class Main extends Application
         loadButtonGraphics(path1, path2, path3, buttonStates, button, 0, 0, false, false);
     }
 
-//    public static void loadButtonGraphicsExitAndReturn(ImageView[] exitButtonStates, ImageView[] returnButtonStates, Button exitButton, Button returnButton)
-//    {
-//        try
-//        {
-//            exitButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonUnPressed.png"), 100, 100, false, false));
-//            exitButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonHover.png"), 100, 100, false, false));
-//            exitButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/RedButtons/SmallRedButtons/RedExitButtonPressed.png"), 100, 100, false, false));
-//            returnButtonStates[0] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonUnPressed.png"), 100, 100, false, false));
-//            returnButtonStates[1] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonHover.png"), 100, 100, false, false));
-//            returnButtonStates[2] = new ImageView(new Image(new FileInputStream("./resources/UI/Buttons/GreenButtons/SmallGreenButton/GreenReturnButtonPressed.png"), 100, 100, false, false));
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            System.out.println("Button load failed");
-//            e.printStackTrace();
-//        }
-//
-//        exitButton.setGraphic(exitButtonStates[0]);
-//        exitButton.setOnMouseEntered(e ->
-//        {
-//            exitButton.setGraphic(exitButtonStates[1]);
-//            Main.playButtonHoverSound();
-//        });
-//        exitButton.setOnMouseExited(e -> exitButton.setGraphic(exitButtonStates[0]));
-//        exitButton.setOnMousePressed(e -> exitButton.setGraphic(exitButtonStates[2]));
-//        returnButton.setGraphic(returnButtonStates[0]);
-//        returnButton.setOnMouseEntered(e ->
-//        {
-//            returnButton.setGraphic(returnButtonStates[1]);
-//            Main.playButtonHoverSound();
-//        });
-//        returnButton.setOnMouseExited(e -> returnButton.setGraphic(returnButtonStates[0]));
-//        returnButton.setOnMousePressed(e -> returnButton.setGraphic(returnButtonStates[2]));
-//    }
-
     @Override
-    public void stop() throws Exception
+    public void stop()
     {
-        System.out.println("Game is shutting down");
         Main.viewModel.model.shutDown();
     }
 
@@ -424,6 +371,7 @@ public class Main extends Application
     {
         try
         {
+            myViewController.mazeDisplayer.solutionIsShowing = false;
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze Files", "*.maze"));
@@ -432,6 +380,7 @@ public class Main extends Application
             {
                 lastScene = mainMenuScene;
                 Main.goToGameMenu();
+                myViewController.mazeDisplayer.online = true;
                 viewModel.loadGame(loadFile);
                 myViewController.mazeGenerated();
             }

@@ -131,7 +131,6 @@ public class OptionsMenuControl
         }
     }
 
-
     public void setBackGround(Stage stage)
     {
         BackGround.fitWidthProperty().bind(stage.widthProperty());
@@ -143,7 +142,6 @@ public class OptionsMenuControl
         Main.playButtonClickSound();
         Main.returnToLastScene();
     }
-
 
     public void exitButtonClicked(ActionEvent actionEvent)
     {

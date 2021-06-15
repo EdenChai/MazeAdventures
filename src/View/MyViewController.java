@@ -24,10 +24,8 @@ import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.ResourceBundle;
 
 public class MyViewController implements Observer
 {
@@ -135,19 +133,9 @@ public class MyViewController implements Observer
 
     /*********************************************************/
 
-    public String getUpdatePlayerRow()
-    {
-        return updatePlayerRow.get();
-    }
-
     public void setUpdatePlayerRow(int row)
     {
         this.updatePlayerRow.set("" + row);
-    }
-
-    public String getUpdatePlayerCol()
-    {
-        return updatePlayerCol.get();
     }
 
     public void setUpdatePlayerCol(int col)

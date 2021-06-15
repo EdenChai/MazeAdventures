@@ -17,14 +17,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
-/**
- * @author Eden_Hai
- * @version 1.0
- * @since 29-05-2021
- */
 public class MazeDisplayer extends Canvas
 {
     private Maze maze;
@@ -46,37 +38,23 @@ public class MazeDisplayer extends Canvas
     Media[] flipSounds = new Media[2];
 
     // wall and player images:
-    StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
 
     // goal position image
     StringProperty imageFileNameGoalPosition = new SimpleStringProperty();
 
-    // solution path image
-    StringProperty imageFileNamePathSolution = new SimpleStringProperty();
 
-
-    /* Getter and Setter */
+    /* Getters and Setters */
 
     public int getPlayerRow() { return playerRow; }
 
     public int getPlayerCol() { return playerCol; }
-
-    public String getImageFileNameWall() { return imageFileNameWall.get(); }
 
     public String getImageFileNamePlayer() { return imageFileNamePlayer.get(); }
 
     public String getImageFileNameGoalPosition() { return imageFileNameGoalPosition.get(); }
 
     public String getTerrainType() {return terrainType.get(); }
-
-    public String getPlayerCharacter() {return playerCharacter.get();}
-
-    public void setImageFileNameWall(String imageFileNameWall) { this.imageFileNameWall.set(imageFileNameWall); }
-
-    public void setImageFileNamePlayer(String imageFileNamePlayer) { this.imageFileNamePlayer.set(imageFileNamePlayer); }
-
-    public void setImageFileNameGoalPosition(String imageFileNameGoalPosition) { this.imageFileNameGoalPosition.set(imageFileNameGoalPosition); }
 
     public void setTerrainType(String terrainType) {this.terrainType.set(terrainType);}
 
@@ -206,11 +184,7 @@ public class MazeDisplayer extends Canvas
         graphicsContext.setFill(Color.GREEN);
 
         if (playerImage == null) { graphicsContext.fillRect(x, y, cellWidth, cellHeight); }
-        else
-        {
-            //graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
-            graphicsContext.drawImage(playerImage, x - cellWidth * 0.3, y - cellHeight * 0.7, cellWidth * 1.5, cellHeight * 1.5);
-        }
+        else { graphicsContext.drawImage(playerImage, x - cellWidth * 0.3, y - cellHeight * 0.7, cellWidth * 1.5, cellHeight * 1.5); }
     }
 
     private void drawMazeTiles(GraphicsContext graphicsContext, int rows, int cols, double cellHeight, double cellWidth)
@@ -401,7 +375,6 @@ public class MazeDisplayer extends Canvas
             case "left", "right" -> imageFileNameGoalPosition.set("./resources/Character/" + playerCharacter.get() + "/notActive_" + direction + ".png");
             default -> System.out.println("Player " + direction + " direction image not found");
         }
-        System.out.println("Direction set to " + direction);
     }
 
     public void loadSounds()

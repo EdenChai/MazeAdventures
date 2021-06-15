@@ -22,11 +22,6 @@ import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * @author Eden_Hai
- * @version 1.0
- * @since 29-05-2021
- */
 public class MyModel extends Observable implements IModel
 {
     private Maze maze;
@@ -53,7 +48,7 @@ public class MyModel extends Observable implements IModel
         solveSearchProblemServer.start();
     }
 
-    /*************** Getter and Setter ***************/
+    /*************** Getters and Setters ***************/
 
     @Override
     public void assignObserver(Observer o)
@@ -414,7 +409,6 @@ public class MyModel extends Observable implements IModel
     @Override
     public void shutDown()
     {
-        System.out.println("Close Model");
         mazeGeneratingServer.stop();
         if (solveSearchProblemServer != null)
         {

@@ -21,7 +21,6 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application
@@ -106,7 +105,7 @@ public class Main extends Application
         model.addObserver(viewModel);
 
         //Load the music
-        File soundClip = new File("./resources/Sound/Menu_Stage/Funky_Chill_2_loop.wav");
+        File soundClip = new File("./resources/Sound/Menu_Stage/Funky_Chill_2_loop.mp3");
         Media sound = new Media(soundClip.toURI().toString());
         mainMenuPlayer = new MediaPlayer(sound);
         mainMenuPlayer.setVolume(0.04);
@@ -232,7 +231,7 @@ public class Main extends Application
 
     private static void playWinSoundLoop()
     {
-        File soundClip = new File("./resources/Sound/Win_Lose/BRPG_Victory_Music_Loop.wav");
+        File soundClip = new File("./resources/Sound/Win_Lose/BRPG_Victory_Music_Loop.mp3");
         Media winSoundClip = new Media(soundClip.toURI().toString());
         winLoopSoundPlayer = new MediaPlayer(winSoundClip);
         winLoopSoundPlayer = new MediaPlayer(winSoundClip);
@@ -281,7 +280,7 @@ public class Main extends Application
 
     public static void playButtonHoverSound()
     {
-        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_beep_16.wav");
+        File soundClip = new File("./resources/Sound/Buttons/menu_button_beep.mp3");
         Media hoverSoundClip = new Media(soundClip.toURI().toString());
         MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
         movementSoundPlayer.setVolume(0.1);
@@ -290,7 +289,7 @@ public class Main extends Application
 
     public static void playButtonClickSound()
     {
-        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_click_22.wav");
+        File soundClip = new File("./resources/Sound/Buttons/menu_button_click.mp3");
         Media hoverSoundClip = new Media(soundClip.toURI().toString());
         MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
         movementSoundPlayer.setVolume(0.1);
@@ -299,7 +298,7 @@ public class Main extends Application
 
     public static void playButtonAcceptSound()
     {
-        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_confirm_01.wav");
+        File soundClip = new File("./resources/Sound/Buttons/menu_button_confirm.mp3");
         Media hoverSoundClip = new Media(soundClip.toURI().toString());
         MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
         movementSoundPlayer.setVolume(0.1);
@@ -308,7 +307,7 @@ public class Main extends Application
 
     public static void playButtonExitSound()
     {
-        File soundClip = new File("./resources/Sound/Buttons/ui_menu_button_cancel_02.wav");
+        File soundClip = new File("./resources/Sound/Buttons/menu_button_cancel.mp3");
         Media hoverSoundClip = new Media(soundClip.toURI().toString());
         MediaPlayer movementSoundPlayer = new MediaPlayer(hoverSoundClip);
         movementSoundPlayer.setVolume(0.1);

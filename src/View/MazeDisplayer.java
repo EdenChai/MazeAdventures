@@ -381,12 +381,12 @@ public class MazeDisplayer extends Canvas
     {
         for (int i = 0; i < 5; i++)
         {
-            File soundClip = new File("./resources/Sound/Movement/" + terrainType.get() + "_Movement/" + terrainType.get() + "_footstep_run_" + (i + 1) + ".wav");
+            File soundClip = new File("./resources/Sound/Movement/" + terrainType.get() + "_Movement/" + terrainType.get() + "_footstep_run_" + (i + 1) + ".mp3");
             moveSounds[i] = new Media(soundClip.toURI().toString());
         }
         for (int i = 0; i < 2; i++)
         {
-            File soundClip = new File("./resources/Sound/Movement/Flip/whoosh_swish_small_" + (i + 1) + ".wav");
+            File soundClip = new File("./resources/Sound/Movement/Flip/whoosh_swish_small_" + (i + 1) + ".mp3");
             flipSounds[i] = new Media(soundClip.toURI().toString());
         }
     }
